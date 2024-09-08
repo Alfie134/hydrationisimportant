@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace AmbulanceOptimization.Model
 {
-    internal class Region
+    public class Region
     {
+        public int RegionId { get; set; }  // Primær nøgle
+        public string Name { get; set; }  // Regionens navn
+        public string ITSystem { get; set; }  // IT-systemet, som regionen bruger, fx SimaTech eller Logis IDS 
     }
+
 }

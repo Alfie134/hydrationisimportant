@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace AmbulanceOptimization.Model
 {
-    internal class PostalCode
+    public class PostalCode
     {
+        public int PostalCodeId { get; set; }  // postnummeret for byen 
+        public string City { get; set; }  // Byen, der hører til postnummeret (f.eks. "Odense")
     }
+
 }
