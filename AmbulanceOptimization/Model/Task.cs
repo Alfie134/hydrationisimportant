@@ -8,25 +8,35 @@ namespace AmbulanceOptimization.Model
 {
     public class Task
     {
-        public int TaskId { get; set; }  // Primær nøgle
+        public int Id { get; set; }  // Primær nøgle
         public int RegionId { get; set; }  // Fremmed nøgle til Region
         public string RegionalTaskId { get; set; }  // Regionalt specifikt opgave-ID
 
-        public string TaskType { get; set; }  // Typen af opgave (f.eks. Ambulance, Patienttransport)
+        public TaskType Type { get; set; }  // Typen af opgave (f.eks. Ambulance, Patienttransport)
         public string Description { get; set; }  // Opgavebeskrivelse
 
-        public TimeSpan ServiceGoal { get; set; }  // Servicemål, f.eks. maksimalt tidsinterval
-        public DateTime TaskDateTime { get; set; }  // Dato og tid for opgaven
+        public ServiceLevel ServiceLevel { get; set; }  
+        public DateTime ExpectedDeparture { get; set; }
+        public int DurationInMin { get; set; }
+        public DateTime ExpectedArrival { get; set; }
+        public string FromAddress { get; set; }
+        public Postal FromPostal { get; set; }
+        public string ToAddress { get; set; }
+        public Postal ToPostal { get; set; }
+        public string PatientName { get; set; }
 
-        public string FromAddress { get; set; }  // Fra adresse (afhentningsadresse)
-        public int FromPostalCodeId { get; set; }  // Fremmed nøgle til postnummer for fra-adresse
-        public PostalCode FromPostalCode { get; set; }  // Navigation property
 
-        public string ToAddress { get; set; }  // Til adresse (leveringsadresse)
-        public int ToPostalCodeId { get; set; }  // Fremmed nøgle til postnummer for til-adresse
-        public PostalCode ToPostalCode { get; set; }  // Navigation property
-
-        public string PatientName { get; set; }  // Patientens navn
+        // Constructor
+       public Task(int id, int regionId, string regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture, 
+                    int durationInMin, DateTime expectedArrival, string fromAddress, Postal fromPostal, string toAddress, Postal toPostak, string patientName)
+  
+        {
+                Id = id; RegionId = regionId; RegionalTaskId = regionalTaskId; Type = type; Description = description; ServiceLevel = serviceLevel; 
+            ExpectedDeparture = expectedDeparture; DurationInMin = durationInMin; ExpectedArrival = expectedArrival; FromAddress = fromAddress; 
+            FromPostal = fromPostal; ToAddress = toAddress; ToPostal = toPostak; PatientName = patientName;
+        }
+    
+    
     }
 
 }
