@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Security.Cryptography; //  Bruges til hashing 
 
 namespace AmbulanceOptimization
 {
@@ -21,7 +22,23 @@ namespace AmbulanceOptimization
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Login_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BrugerIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e) //   Der findes en Password Box, som maskerer input
+        {
+           throw new NotImplementedException("??");
+        }
+
+        private void PasswordBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
