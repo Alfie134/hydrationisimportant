@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Security.Cryptography; //  Bruges til hashing 
+using System.Security.Cryptography;
 
-
-namespace AmbulanceOptimization.Model
+namespace Models
 {
     public class User
     {
@@ -16,9 +15,9 @@ namespace AmbulanceOptimization.Model
 
 
         // Constructor til at initialisere User-objektet med værdier.
-        public User( string userName, string password, Region region)
+        public User(string userName, string password, Region region)
         {
-         
+
             UserName = userName;
             Password = password; // Password bør håndteres sikkert (f.eks. hashing).
             Region = region;

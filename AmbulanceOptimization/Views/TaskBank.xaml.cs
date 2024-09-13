@@ -22,6 +22,7 @@ namespace AmbulanceOptimization.View
         public TaskBank()
         {
             InitializeComponent();
+
         }
     }
 }

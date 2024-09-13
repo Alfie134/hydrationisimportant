@@ -1,12 +1,13 @@
 ﻿<Window x:Class="AmbulanceOptimization.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
         Title="Login" Height="500" Width="800"
         WindowStartupLocation="CenterScreen" Background="White">
 
     <!-- Grid layout -->
     <Grid>
-
+       
         <!-- Row Definitions for splitting the screen -->
         <Grid.RowDefinitions>
             <RowDefinition Height="150"/>
@@ -17,9 +18,10 @@
 
         <StackPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="20,20,0,0">
             <!-- Logo Image -->
-            <Image Source="/View/Images/Region Syddanmark Logo.png"  Height="80" VerticalAlignment="Center"/>
+            <Image Source="/Images/Region Syddanmark Logo.png" Height="80" VerticalAlignment="Center"/>
         </StackPanel>
-
+        <!-- Brug ClockControl user control -->
+        <controls:ClockControl  />
         <!-- Login Form Section -->
         <Border Grid.Row="1" Background="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center" 
                 CornerRadius="1" Padding="20" Width="350" Height="250" BorderBrush="Gray" BorderThickness="1">
