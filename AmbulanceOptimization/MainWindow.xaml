@@ -16,10 +16,9 @@
             <!-- Bottom section for the login form -->
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="20,20,0,0">
-            <!-- Logo Image -->
-            <Image Source="/Images/Region Syddanmark Logo.png" Height="80" VerticalAlignment="Center"/>
-        </StackPanel>
+        <!-- Logo control -->
+        <controls:RegionSouthLogo/>
+        
         <!-- Brug ClockControl user control -->
         <controls:ClockControl  />
         <!-- Login Form Section -->

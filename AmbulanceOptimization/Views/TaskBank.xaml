@@ -4,10 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AmbulanceOptimization.View"
+                        xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
+
         mc:Ignorable="d"
         Title="TaskBank" Height="450" Width="800">
     <Grid>
-        
+        <!-- Brug ClockControl user control -->
+        <controls:ClockControl  />
         <!-- Region Syd Logo -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" >
             <Image Source="/Images/Region Syddanmark Logo.png" Height="50" Width="100" />
