@@ -11,22 +11,24 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AmbulanceOptimization.View;
 
 namespace AmbulanceOptimization.View
 {
     /// <summary>
-    /// Interaction logic for Menu.xaml
+    /// Interaction logic for MenuWindow.xaml
     /// </summary>
-    public partial class Menu : Window
+    public partial class MenuWindow : Window
     {
-        public Menu()
+        public MenuWindow()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Open_TaskBank(object sender, RoutedEventArgs e)
         {
-
+            TaskBank taskBank = new TaskBank();
+            taskBank.ShowDialog();
         }
     }
 }

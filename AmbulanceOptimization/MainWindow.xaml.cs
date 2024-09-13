@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Security.Cryptography; //  Bruges til hashing 
+using AmbulanceOptimization.View;
 
 namespace AmbulanceOptimization
 {
@@ -24,7 +25,9 @@ namespace AmbulanceOptimization
 
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            //Burde jo lige tjekke om det er korrekte oplysninger , men nu gør vi lige sådan midlertidigt
+            MenuWindow MW = new MenuWindow();
+            MW.ShowDialog();
         }
 
         private void BrugerIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
