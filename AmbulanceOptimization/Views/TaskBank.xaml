@@ -11,11 +11,8 @@
     <Grid>
         <!-- Brug ClockControl user control -->
         <controls:ClockControl  />
-        <!-- Region Syd Logo -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" >
-            <Image Source="/Images/Region Syddanmark Logo.png" Height="50" Width="100" />
-        </StackPanel>
-        
-       
+        <!-- Logo control -->
+        <controls:RegionSouthLogo/>
+
     </Grid>
 </Window>

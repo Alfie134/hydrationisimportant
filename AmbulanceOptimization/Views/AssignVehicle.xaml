@@ -11,6 +11,7 @@
     <Grid>
         <!-- Brug ClockControl user control -->
         <controls:ClockControl  />
+        
         <!-- Logo control -->
         <controls:RegionSouthLogo/>
     </Grid>

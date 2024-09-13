@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="20,20,0,0">
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="20,20,0,0">
             <!-- Logo Image -->
             <Image Source="/Images/Region Syddanmark Logo.png" Height="80" VerticalAlignment="Center"/>
         </StackPanel>
