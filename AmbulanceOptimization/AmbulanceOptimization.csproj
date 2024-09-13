@@ -9,12 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\Region Syddanmark Logo.png" />
-    <None Remove="View\Images\Region Syddanmark Logo.png" />
+    <Compile Remove="Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <None Remove="Model\**" />
+    <Page Remove="Model\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="View\Images\Region Syddanmark Logo.png" />
+    <None Remove="Images\Region Syddanmark Logo.png" />
+    <None Remove="Views\Images\Region Syddanmark Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Images\Region Syddanmark Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
