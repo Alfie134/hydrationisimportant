@@ -10,19 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AmbulanceOptimization.View
+namespace AmbulanceOptimization.Views.UserControls
 {
     /// <summary>
-    /// Interaction logic for TaskBank.xaml
+    /// Interaction logic for RegionSouthLogo.xaml
     /// </summary>
-    public partial class TaskBank : Window
+    public partial class RegionSouthLogo : UserControl
     {
-        public TaskBank()
+        public RegionSouthLogo()
         {
             InitializeComponent();
-
         }
     }
 }

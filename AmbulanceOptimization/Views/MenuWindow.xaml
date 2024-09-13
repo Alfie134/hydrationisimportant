@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AmbulanceOptimization.View"
+                xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
+
         mc:Ignorable="d"
         Title="Menu" Height="450" Width="800">
     <Grid>
+        <!-- Brug ClockControl user control -->
+        <controls:ClockControl  />
         <Image HorizontalAlignment="Left" Height="100" Margin="38,32,0,0" VerticalAlignment="Top" Width="100"/>
         <Button Content="Opgavebanken" HorizontalAlignment="Center" Margin="0,163,0,0" VerticalAlignment="Top" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold" Click="Open_TaskBank"/>
         <Button Content="Under udførelse" HorizontalAlignment="Center" Margin="0,238,0,0" VerticalAlignment="Top" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold"/>
