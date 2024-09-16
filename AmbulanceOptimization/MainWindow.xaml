@@ -19,7 +19,8 @@
         <Grid Grid.Row="0">
             <!-- Logo control -->
             <controls:RegionSouthLogo/>
-
+            <!-- profile button User control -->
+            <controls:UserProfileControl/>
             <!-- ClockControl user control -->
             <controls:ClockControl/>
         </Grid>

@@ -7,12 +7,63 @@
                         xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
 
         mc:Ignorable="d"
-        Title="TaskBank" Height="450" Width="800">
+        Title="TaskBank" Height="600" Width="900">
     <Grid>
         <!-- Brug ClockControl user control -->
         <controls:ClockControl  />
         <!-- Logo control -->
         <controls:RegionSouthLogo/>
+        <!-- profil button control -->
+        <controls:UserProfileControl/>
+        <!-- Task bank header -->
+        <TextBlock x:Name="TaskBankHeader" Text="OPGAVEBANK" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0"/>
+        <DataGrid x:Name="TaskDataGrid" AutoGenerateColumns="False" 
+                  GridLinesVisibility="All" BorderBrush="Black" BorderThickness="1"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20,150,20,100" Height="300">
 
+            <DataGrid.Columns>
+                <!-- Type -->
+                <DataGridTextColumn Header="Type" Binding="{Binding TaskType}" Width="50"/>
+
+                <!-- Opgave ID -->
+                <DataGridTextColumn Header="Opgave ID" Binding="{Binding TaskId}" Width="100"/>
+
+                <!-- Beskrivelse -->
+                <DataGridTextColumn Header="Beskrivelse" Binding="{Binding Description}" Width="200"/>
+
+                <!-- Servicemål -->
+                <DataGridTextColumn Header="Servicemål" Binding="{Binding ServiceLevel}" Width="100"/>
+
+                <!-- Max Varighed/min -->
+                <DataGridTextColumn Header="Max Varighed/min" Binding="{Binding MaxDuration}" Width="150"/>
+
+                <!-- Personlig information -->
+                <DataGridTextColumn Header="Personlig information" Binding="{Binding PersonalInfo}" Width="200"/>
+
+                <!-- Fra Adresse -->
+                <DataGridTextColumn Header="Fra Adresse" Binding="{Binding FromAddress}" Width="200"/>
+
+                <!-- Til Adresse -->
+                <DataGridTextColumn Header="Til Adresse" Binding="{Binding ToAddress}" Width="200"/>
+
+                <!-- Tid og dato -->
+                <DataGridTextColumn Header="Tid og dato" Binding="{Binding DateTime}" Width="150"/>
+
+                <!-- Tildel Knap -->
+                <DataGridTemplateColumn Header="Tildel" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Tildel opgave" Width="80" Height="30"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Annuller knap -->
+        <Button x:Name="CancelButton" Content="Annuller" Width="80" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20"/>
+
+        <!-- Vend tilbage til menu knap -->
+        <Button x:Name="BackToMenuButton" Content="Vend tilbage til menu" Width="150" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"/>
     </Grid>
 </Window>
