@@ -4,50 +4,60 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AmbulanceOptimization.View"
-                        xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
-
+        xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
         mc:Ignorable="d"
         Title="TaskBank" Height="600" Width="900">
     <Grid>
         <!-- Brug ClockControl user control -->
-        <controls:ClockControl  />
+        <controls:ClockControl />
         <!-- Logo control -->
         <controls:RegionSouthLogo/>
-        <!-- profil button control -->
+        <!-- Profil button control -->
         <controls:UserProfileControl/>
         <!-- Task bank header -->
         <TextBlock x:Name="TaskBankHeader" Text="OPGAVEBANK" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0"/>
+
+        <!-- DataGrid til opgaver -->
         <DataGrid x:Name="TaskDataGrid" AutoGenerateColumns="False" 
                   GridLinesVisibility="All" BorderBrush="Black" BorderThickness="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20,150,20,100" Height="300">
 
             <DataGrid.Columns>
                 <!-- Type -->
-                <DataGridTextColumn Header="Type" Binding="{Binding TaskType}" Width="50"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="45"/>
 
                 <!-- Opgave ID -->
-                <DataGridTextColumn Header="Opgave ID" Binding="{Binding TaskId}" Width="100"/>
+                <DataGridTextColumn Header="Opgave ID" Binding="{Binding RegionalTaskId}" Width="80"/>
 
                 <!-- Beskrivelse -->
-                <DataGridTextColumn Header="Beskrivelse" Binding="{Binding Description}" Width="200"/>
+                <DataGridTextColumn Header="Beskrivelse" Binding="{Binding Description}" Width="100"/>
 
                 <!-- Servicemål -->
-                <DataGridTextColumn Header="Servicemål" Binding="{Binding ServiceLevel}" Width="100"/>
+                <DataGridTextColumn Header="Servicemål" Binding="{Binding ServiceLevel.Name}" Width="70"/>
 
-                <!-- Max Varighed/min -->
-                <DataGridTextColumn Header="Max Varighed/min" Binding="{Binding MaxDuration}" Width="150"/>
+                <!-- Forventet Afrejse -->
+                <DataGridTextColumn Header="Forventet Afrejse" Binding="{Binding ExpectedDeparture}" Width="150"/>
 
-                <!-- Personlig information -->
-                <DataGridTextColumn Header="Personlig information" Binding="{Binding PersonalInfo}" Width="200"/>
+                <!-- Varighed/min -->
+                <DataGridTextColumn Header="Varighed (min)" Binding="{Binding DurationInMin}" Width="100"/>
+
+                <!-- Forventet Ankomst -->
+                <DataGridTextColumn Header="Forventet Ankomst" Binding="{Binding ExpectedArrival}" Width="150"/>
+
+                <!-- Patientnavn -->
+                <DataGridTextColumn Header="Patientnavn" Binding="{Binding PatientName}" Width="100"/>
 
                 <!-- Fra Adresse -->
                 <DataGridTextColumn Header="Fra Adresse" Binding="{Binding FromAddress}" Width="200"/>
 
+                <!-- Fra Postnummer -->
+                <DataGridTextColumn Header="Fra Postnummer" Binding="{Binding FromPostal.PostalNumber}" Width="100"/>
+
                 <!-- Til Adresse -->
                 <DataGridTextColumn Header="Til Adresse" Binding="{Binding ToAddress}" Width="200"/>
 
-                <!-- Tid og dato -->
-                <DataGridTextColumn Header="Tid og dato" Binding="{Binding DateTime}" Width="150"/>
+                <!-- Til Postnummer -->
+                <DataGridTextColumn Header="Til Postnummer" Binding="{Binding ToPostal.PostalNumber}" Width="100"/>
 
                 <!-- Tildel Knap -->
                 <DataGridTemplateColumn Header="Tildel" Width="100">
@@ -62,8 +72,7 @@
 
         <!-- Annuller knap -->
         <Button x:Name="CancelButton" Content="Annuller" Width="80" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20"/>
-
-        <!-- Vend tilbage til menu knap -->
-        <Button x:Name="BackToMenuButton" Content="Vend tilbage til menu" Width="150" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"/>
+        <!-- Back to menu knap -->
+        <controls:BackToMenu/>
     </Grid>
 </Window>
