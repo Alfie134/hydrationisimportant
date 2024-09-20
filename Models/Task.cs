@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmbulanceOptimization.Model
+namespace Models
 {
     public class Task
     {
@@ -15,7 +15,7 @@ namespace AmbulanceOptimization.Model
         public TaskType Type { get; set; }  // Typen af opgave (f.eks. Ambulance, Patienttransport)
         public string Description { get; set; }  // Opgavebeskrivelse
 
-        public ServiceLevel ServiceLevel { get; set; }  
+        public ServiceLevel ServiceLevel { get; set; }
         public DateTime ExpectedDeparture { get; set; }
         public int DurationInMin { get; set; }
         public DateTime ExpectedArrival { get; set; }
@@ -27,16 +27,16 @@ namespace AmbulanceOptimization.Model
 
 
         // Constructor
-       public Task(int id, int regionId, string regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture, 
-                    int durationInMin, DateTime expectedArrival, string fromAddress, Postal fromPostal, string toAddress, Postal toPostak, string patientName)
-  
+        public Task(int id, int regionId, string regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture,
+                     int durationInMin, DateTime expectedArrival, string fromAddress, Postal fromPostal, string toAddress, Postal toPostak, string patientName)
+
         {
-                Id = id; RegionId = regionId; RegionalTaskId = regionalTaskId; Type = type; Description = description; ServiceLevel = serviceLevel; 
-            ExpectedDeparture = expectedDeparture; DurationInMin = durationInMin; ExpectedArrival = expectedArrival; FromAddress = fromAddress; 
+            Id = id; RegionId = regionId; RegionalTaskId = regionalTaskId; Type = type; Description = description; ServiceLevel = serviceLevel;
+            ExpectedDeparture = expectedDeparture; DurationInMin = durationInMin; ExpectedArrival = expectedArrival; FromAddress = fromAddress;
             FromPostal = fromPostal; ToAddress = toAddress; ToPostal = toPostak; PatientName = patientName;
         }
-    
-    
+
+
     }
 
 }

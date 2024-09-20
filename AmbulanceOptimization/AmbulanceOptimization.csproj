@@ -9,7 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <None Remove="Model\**" />
+    <Page Remove="Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Images\Region Syddanmark Logo.png" />
+    <None Remove="Views\Images\ProfileButton.png" />
+    <None Remove="Views\Images\Region Syddanmark Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Images\ProfileButton.png" />
+    <Resource Include="Views\Images\Region Syddanmark Logo.png" />
   </ItemGroup>
 
   <ItemGroup>

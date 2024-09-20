@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmbulanceOptimization", "AmbulanceOptimization.csproj", "{9A703979-3ACD-494A-8B39-B6FEB0D3685D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmbulanceOptimization", "AmbulanceOptimization.csproj", "{9A703979-3ACD-494A-8B39-B6FEB0D3685D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonLayer", "CommonLayer", "{2505C58F-CC2A-44AF-A356-6B178D391231}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "..\Models\Models.csproj", "{57382E81-C61A-4996-A602-23319F385735}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLogicLayer", "BusinessLogicLayer", "{BE11CF81-E63D-4816-B89D-41151E18962B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "..\Services\Services.csproj", "{270483E7-C91A-44B7-8D1D-B83E8502B894}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccessLayer", "DataAccessLayer", "{70CF3946-A77F-47F8-9934-4F5CD1B585C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "..\Repositories\Repositories.csproj", "{68485924-9DFA-46DF-A450-857D2CC2C28A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +27,26 @@ Global
 		{9A703979-3ACD-494A-8B39-B6FEB0D3685D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A703979-3ACD-494A-8B39-B6FEB0D3685D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A703979-3ACD-494A-8B39-B6FEB0D3685D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57382E81-C61A-4996-A602-23319F385735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57382E81-C61A-4996-A602-23319F385735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57382E81-C61A-4996-A602-23319F385735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57382E81-C61A-4996-A602-23319F385735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{270483E7-C91A-44B7-8D1D-B83E8502B894}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{270483E7-C91A-44B7-8D1D-B83E8502B894}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{270483E7-C91A-44B7-8D1D-B83E8502B894}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{270483E7-C91A-44B7-8D1D-B83E8502B894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68485924-9DFA-46DF-A450-857D2CC2C28A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68485924-9DFA-46DF-A450-857D2CC2C28A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68485924-9DFA-46DF-A450-857D2CC2C28A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68485924-9DFA-46DF-A450-857D2CC2C28A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{57382E81-C61A-4996-A602-23319F385735} = {2505C58F-CC2A-44AF-A356-6B178D391231}
+		{270483E7-C91A-44B7-8D1D-B83E8502B894} = {BE11CF81-E63D-4816-B89D-41151E18962B}
+		{68485924-9DFA-46DF-A450-857D2CC2C28A} = {70CF3946-A77F-47F8-9934-4F5CD1B585C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5D36D74-B7BA-4C97-B831-F0DB495F337A}

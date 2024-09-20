@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Security.Cryptography; //  Bruges til hashing 
+using AmbulanceOptimization.View;
 
 namespace AmbulanceOptimization
 {
@@ -21,7 +23,33 @@ namespace AmbulanceOptimization
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Login_Button_Click(object sender, RoutedEventArgs e)
+        {
+            // Burde jo lige tjekke om det er korrekte oplysninger, men nu gør vi lige sådan midlertidigt
+            MenuWindow MW = new MenuWindow();
+            MW.Show();
+
+            // Lukker det nuværende vindue (Login-vinduet)
+            Window currentWindow = Window.GetWindow(this);
+            if (currentWindow != null)
+            {
+                currentWindow.Close();
+            }
+        }
+
+
+        private void BrugerIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e) //   Der findes en Password Box, som maskerer input
+        {
+           throw new NotImplementedException("??");
+        }
+
+        private void PasswordBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
