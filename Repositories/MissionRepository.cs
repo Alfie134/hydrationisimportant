@@ -53,5 +53,25 @@ PatientName,RegionId,RouteId,FromPostal,ToPostal,ServiceLevelId,UserId) VALUES
                 command.ExecuteNonQuery();
             }
         }
+
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Mission> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Mission GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Mission entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

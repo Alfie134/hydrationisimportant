@@ -1,23 +1,17 @@
 ﻿using Configuration;
 using Microsoft.Data.SqlClient;
-using Microsoft.Identity.Client;
 using Models;
 using Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class PostalRepository : IReadRepository<Postal>
+    public class PostalRepository : IPostalRepository
     {
         private readonly string _connectionString = new AppConfig().ConnectionString;
         public IEnumerable<Postal> GetAll()
         {
             var postals = new List<Postal>();
-            string query = "SELECT * FROM dbo.Postal";
+            string query = "SELECT * FROM PostalCode";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
