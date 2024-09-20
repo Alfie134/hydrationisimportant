@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Task
+    public class Mission
     {
         public int Id { get; set; }  // Primær nøgle
         public int RegionId { get; set; }  // Fremmed nøgle til Region
@@ -27,13 +27,17 @@ namespace Models
 
 
         // Constructor
-        public Task(int id, int regionId, string regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture,
-                     int durationInMin, DateTime expectedArrival, string fromAddress, Postal fromPostal, string toAddress, Postal toPostak, string patientName)
+        public Mission(int id, int regionId, string regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture,
+                     int durationInMin, DateTime expectedArrival, string fromAddress, Postal fromPostal, string toAddress, Postal toPostal, string patientName)
 
         {
             Id = id; RegionId = regionId; RegionalTaskId = regionalTaskId; Type = type; Description = description; ServiceLevel = serviceLevel;
             ExpectedDeparture = expectedDeparture; DurationInMin = durationInMin; ExpectedArrival = expectedArrival; FromAddress = fromAddress;
-            FromPostal = fromPostal; ToAddress = toAddress; ToPostal = toPostak; PatientName = patientName;
+            FromPostal = fromPostal; ToAddress = toAddress; ToPostal = toPostal; PatientName = patientName;
+        }
+
+        public Mission()
+        {
         }
 
 
