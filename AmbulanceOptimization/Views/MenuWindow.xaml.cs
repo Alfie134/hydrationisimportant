@@ -28,7 +28,8 @@ namespace AmbulanceOptimization.View
         private void Open_TaskBank(object sender, RoutedEventArgs e)
         {
             TaskBank taskBank = new TaskBank();
-            taskBank.ShowDialog();
+            taskBank.Show();
+            this.Close();
         }
     }
 }

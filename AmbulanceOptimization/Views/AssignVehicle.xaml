@@ -14,5 +14,64 @@
         
         <!-- Logo control -->
         <controls:RegionSouthLogo/>
+        
+        <!-- Back to Menu control -->
+        <controls:BackToMenu/>
+        
+        <!-- profil knap control -->
+        <controls:UserProfileControl/>
+        
+        <!-- Header for tildeling ambulance side -->
+        <TextBlock Text="AMBULANCER" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0"/>
+
+
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,110,100,0">
+            <!-- Header for valgt destination-->
+            <TextBlock x:Name="SelectedAddress" Text="Valgt destination:" FontSize="15" FontWeight="Bold" />
+
+            <!-- "fra adresse" sektion-->
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock Text="Fra:" FontWeight="SemiBold" FontSize="10"/>
+                <TextBlock Text="{Binding FromAddress}" FontSize="10"  Margin="10,0,0,0"/>
+            </StackPanel>
+            
+            <!-- "Til adresse" sektion -->
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Til:" FontWeight="SemiBold"  FontSize="10" />
+                <TextBlock Text="{Binding ToAddress}" FontSize="10" VerticalAlignment="Top" Margin="10,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+
+
+        <!-- DataGrid for ambulancer -->
+        <DataGrid x:Name="VehicleDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding VehicleList}"
+                  GridLinesVisibility="All" BorderBrush="Black" BorderThickness="1"
+                  HorizontalAlignment="Stretch" Margin="30,200,30,100" Height=" 300">
+
+            <DataGrid.Columns>
+                <!-- Køretøj/ambulance id -->
+                <DataGridTextColumn Header="Ambulance-ID" Binding="{Binding VehicleId}"/>
+
+                <!-- Køretøj/ambulance type -->
+                <DataGridTextColumn Header="Ambulance Type" Binding="{Binding VehicleType}"/>
+
+                <!-- planer for køretøj -->
+                <DataGridTextColumn Header="Planlagte ruter" Binding="{Binding Route}"/>
+
+                <!-- aktuel status -->
+                <DataGridTextColumn Header="Rutestatus" Binding="{Binding Status}"/>
+
+                <!-- vælg ambulance knap kolonne -->
+                <DataGridTemplateColumn Header="Vælg ambulance" Width="200">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          
+                            <Button x:Name="Assign" Content="Vælg ambulance" Click="Assign_Click" IsEnabled="True"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

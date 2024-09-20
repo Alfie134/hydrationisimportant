@@ -1,15 +1,18 @@
 ﻿<Window x:Class="AmbulanceOptimization.View.ConfirmAssignment"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AmbulanceOptimization.View"
-                xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
-
-        mc:Ignorable="d"
-        Title="ConfirmAssignment" Height="450" Width="800">
+        Title="Confirm Assignment" Height="300" Width="400">
     <Grid>
-        <!-- Brug ClockControl user control -->
-        <controls:ClockControl  />
+        <TextBlock Text="Bekræft valget af ambulance" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
+
+        <TextBlock Text="Ambulance-ID:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,70,0,0"/>
+        <TextBlock x:Name="VehicleIdTextBlock" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,70,0,0"/>
+
+        <TextBlock Text="Ambulance Type:" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,100,0,0"/>
+        <TextBlock x:Name="VehicleTypeTextBlock" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,100,0,0"/>
+        
+        
+        
+        
     </Grid>
 </Window>
