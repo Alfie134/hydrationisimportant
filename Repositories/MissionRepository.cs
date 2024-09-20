@@ -9,7 +9,7 @@ using Repositories.Interfaces;
 
 namespace Repositories
 {
-    public class MissionRepository: IMissionRepository
+    public class MissionRepository: IRepository<Mission>
     {
 
         public IEnumerable<Mission> GetAll()
@@ -32,7 +32,12 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public void Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
+//        public void Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
+//        {
+//           throw new NotImplementedException();
+//        }
+
+        public void Add(Mission entity)
         {
             throw new NotImplementedException();
         }

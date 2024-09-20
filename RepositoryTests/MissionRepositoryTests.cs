@@ -24,7 +24,7 @@ namespace RepositoryTests
                 RegionId = 1,
                 ExpectedDeparture = DateTime.Now,
                 DurationInMin = 120,
-                Type = TaskType.C,
+                Type = MissionType.C,
 
                 
                 Description = "Mission 1 Description",

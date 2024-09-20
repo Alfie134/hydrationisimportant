@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public enum TaskType
+    public enum Role
     {
-        C, // repræsentere en bestemt type opgave
-        D  // repræsentere en anden type opgave
+        Dispatcher,
+        Hospital,
+        Admin
     }
-
 }
