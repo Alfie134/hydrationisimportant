@@ -18,18 +18,25 @@ namespace RepositoryTests
         public void CreateMission()
         {
 
-
+            //Arrange
             Mission mission = new Mission()
             {
-                RegionId = 1,
+                RegionalTaskId = "TestId",
                 ExpectedDeparture = DateTime.Now,
                 DurationInMin = 120,
+                ExpectedArrival = DateTime.Now.AddMinutes(120),
+                PatientName = "Jane Doe",
+                RouteId = null,
+                FromPostalCode = 8940,
+                ToPostalCode = 8900,
                 Type = TaskType.C,
+                ServiceLevelId = 1,
+                RegionId = 1082,
 
-                
                 Description = "Mission 1 Description",
             };
 
+            //Act
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -50,6 +57,7 @@ namespace RepositoryTests
                     }
                 }
             }
+            //Assert
         }
     }
 }

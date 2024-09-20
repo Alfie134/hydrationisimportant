@@ -16,14 +16,19 @@ namespace Models
         public string Description { get; set; }  // Opgavebeskrivelse
 
         public ServiceLevel ServiceLevel { get; set; }
+        public int ServiceLevelId { get; set; }
         public DateTime ExpectedDeparture { get; set; }
         public int DurationInMin { get; set; }
         public DateTime ExpectedArrival { get; set; }
         public string FromAddress { get; set; }
         public Postal FromPostal { get; set; }
+        public int FromPostalCode { get; set; }
         public string ToAddress { get; set; }
         public Postal ToPostal { get; set; }
+        public int ToPostalCode { get; set; }
         public string PatientName { get; set; }
+        public int? RouteId { get; set; }
+        public int? UserId { get; set; }
 
 
         // Constructor
