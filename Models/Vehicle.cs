@@ -17,6 +17,10 @@ namespace Models
             Id = id;
             Type = type;
         }
+
+
     }
+
+
 }
 

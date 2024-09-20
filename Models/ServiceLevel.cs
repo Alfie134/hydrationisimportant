@@ -17,9 +17,12 @@ namespace Models
         // Constructor 
         public ServiceLevel(int id, string name, TimeSpan time)
         {
-            Id = id;
-            Name = name;
-            Time = time;
+            {
+                Id = id;
+                Name = name;
+                Time = time;
+            }
+
         }
     }
 }

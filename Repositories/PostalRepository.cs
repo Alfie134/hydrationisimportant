@@ -1,4 +1,5 @@
 ﻿using Configuration;
+using Microsoft.Data.SqlClient;
 using Microsoft.Identity.Client;
 using Models;
 using Repositories.Interfaces;
@@ -10,33 +11,49 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    internal class PostalRepository : IRepository<Postal>
+    public class PostalRepository : IReadRepository<Postal>
     {
         private readonly string _connectionString = new AppConfig().ConnectionString;
-
-        public void Add(Postal entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Postal> GetAll()
         {
+            var postals = new List<Postal>();
+            string query = "SELECT * FROM dbo.Postal";
 
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        postals.Add(new Postal((int)reader["PostalCode"], (string)reader["City"]));
+                    }
+                }
+            }
+            return postals;
         }
 
         public Postal GetById(int id)
         {
-            throw new NotImplementedException();
-        }
+            Postal postal = null;
+            string query = "SELECT * FROM POSTAL WHERE postalNumber = @PostalCode";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@PostalCode", id);
+                connection.Open();
 
-        public void Update(Postal entity)
-        {
-            throw new NotImplementedException();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        postal = new Postal((int)reader["PostalCode"], (string)reader["City"]);
+                    }
+                }
+            }
+            return postal;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Models
         public int RegionId { get; set; }  // Fremmed nøgle til Region
         public string RegionalTaskId { get; set; }  // Regionalt specifikt opgave-ID
 
-        public MissionType Type { get; set; }  // Typen af opgave (f.eks. Ambulance, Patienttransport)
+        public TaskType Type { get; set; }  // Typen af opgave (f.eks. Ambulance, Patienttransport)
         public string Description { get; set; }  // Opgavebeskrivelse
 
         public ServiceLevel ServiceLevel { get; set; }
@@ -32,7 +32,7 @@ namespace Models
 
 
         // Constructor
-        public Mission(int id, int regionId, string regionalTaskId, MissionType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture,
+        public Mission(int id, int regionId, string regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture,
                      int durationInMin, DateTime expectedArrival, string fromAddress, Postal fromPostal, string toAddress, Postal toPostal, string patientName)
 
         {

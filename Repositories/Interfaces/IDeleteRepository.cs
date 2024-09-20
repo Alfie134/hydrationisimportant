@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models
+namespace Repositories.Interfaces
 {
-    public enum MissionType
+    public interface IDeleteRepository<T>
     {
-        C,
-        D
+        void Delete(int id);
     }
 }

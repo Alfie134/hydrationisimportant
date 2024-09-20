@@ -9,35 +9,9 @@ using Repositories.Interfaces;
 
 namespace Repositories
 {
-    public class MissionRepository: IRepository<Mission>
+    public class MissionRepository: IMissionRepository
     {
-
-        public IEnumerable<Mission> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Mission GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Mission entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-//        public void Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
-//        {
-//           throw new NotImplementedException();
-//        }
-
-        public void Add(Mission entity)
+        public void Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
             var command = new SqlCommand(@$"INSERT INTO Mission (Type,Description,RegionTaskId,ExpectedDeparture,Duration,ExpectedArrival,
 PatientName,RegionId,RouteId,FromPostal,ToPostal,ServiceLevelId,UserId) VALUES 

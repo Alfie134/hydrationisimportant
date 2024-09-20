@@ -33,7 +33,6 @@ namespace RepositoryTests
                 Type = TaskType.C,
                 ServiceLevelId = 1,
                 RegionId = 1082,
-
                 Description = "Mission 1 Description",
             };
 
