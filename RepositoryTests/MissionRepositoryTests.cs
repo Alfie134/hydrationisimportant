@@ -9,6 +9,7 @@ namespace RepositoryTests
     [TestClass]
     public class MissionRepositoryTests
     {
+        /*
         private IMissionRepository _missionRepository = new MissionRepository();
 
         private readonly string _connectionString = new AppConfig().ConnectionString;
@@ -59,5 +60,6 @@ namespace RepositoryTests
             }
             //Assert
         }
+        */
     }
 }

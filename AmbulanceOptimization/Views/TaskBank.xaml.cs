@@ -44,5 +44,15 @@ namespace AmbulanceOptimization.View
             // Bind data til DataGrid
             TaskDataGrid.ItemsSource = tasks;
         }
+
+        private void AssignVehicle_Click(object sender, RoutedEventArgs e)
+        {
+            AssignVehicle assignVehicleWindow = new AssignVehicle();
+
+            assignVehicleWindow.ShowDialog();
+
+            this.Close();
+        }
+
     }
 }

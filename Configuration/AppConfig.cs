@@ -18,6 +18,5 @@ namespace Configuration
 
         // Expose Connection String
         public string ConnectionString => _configuration.GetConnectionString("DefaultConnection");
-
     }
 }

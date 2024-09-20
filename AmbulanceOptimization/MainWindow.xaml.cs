@@ -26,17 +26,19 @@ namespace AmbulanceOptimization
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
             // Burde jo lige tjekke om det er korrekte oplysninger, men nu gør vi lige sådan midlertidigt
-            MenuWindow MW = new MenuWindow();
-            MW.Show();
+            MenuWindow menuWindow = new MenuWindow();
+
+            // Viser det nye vindue
+            menuWindow.Show();
 
             // Lukker det nuværende vindue (Login-vinduet)
             Window currentWindow = Window.GetWindow(this);
             if (currentWindow != null)
             {
-                currentWindow.Close();
+                currentWindow.Close(); // Brug Close i stedet for Hide, da vi lukker vinduet
             }
         }
-
+    
 
         private void BrugerIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
