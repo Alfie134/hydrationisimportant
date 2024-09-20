@@ -63,7 +63,7 @@
                 <DataGridTemplateColumn Header="Tildel" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Tildel opgave" Width="80" Height="30"/>
+                            <Button Content="Tildel opgave" Width="80" Height="30" Click="AssignVehicle_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
