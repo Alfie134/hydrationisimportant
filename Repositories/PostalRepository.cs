@@ -1,4 +1,6 @@
-﻿using Models;
+﻿using Configuration;
+using Microsoft.Identity.Client;
+using Models;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,8 @@ namespace Repositories
 {
     internal class PostalRepository : IRepository<Postal>
     {
+        private readonly string _connectionString = new AppConfig().ConnectionString;
+
         public void Add(Postal entity)
         {
             throw new NotImplementedException();
@@ -22,7 +26,7 @@ namespace Repositories
 
         public IEnumerable<Postal> GetAll()
         {
-            throw new NotImplementedException();
+
         }
 
         public Postal GetById(int id)

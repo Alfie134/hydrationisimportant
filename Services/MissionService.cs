@@ -13,7 +13,7 @@ namespace Services
 {
     public class MissionService
     {
-
+/*
         private readonly string _connectionString;
         private readonly IMissionRepository _missionRepository;
         public MissionService()
@@ -48,5 +48,6 @@ namespace Services
                 }
             }
         }
+        */
     }
 }
