@@ -10,16 +10,22 @@ namespace RepositoryTests
     public class PostalRepositoryTests
     {
         
-        private IReadRepository<Postal> _postalRepository = new PostalRepository();
+        private IPostalRepository _postalRepository = new PostalRepository();
 
 
         [TestMethod]
         public void GetAll_ReturnsAllRows()
         {
-           IEnumerable<Postal> PostalsList = _postalRepository.GetAll();
-            Console.WriteLine("Postal number is this many: ");
-            Console.WriteLine(PostalsList.Count());
+           IEnumerable<Postal> postalsList = _postalRepository.GetAll();
+            Assert.IsTrue(postalsList.Count() != 0);
+        }
 
+        [TestMethod]
+        public void GetById_ReturnsCorrectInfo()
+        {
+            Postal tempPostal = _postalRepository.GetById(783);
+            Assert.IsNotNull(tempPostal);
+            Assert.IsTrue(tempPostal.CityName == "Facility");
         }
     }
-}
+} 

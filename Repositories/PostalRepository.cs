@@ -32,7 +32,7 @@ namespace Repositories
         public Postal GetById(int id)
         {
             Postal postal = null;
-            string query = "SELECT * FROM POSTAL WHERE postalNumber = @PostalCode";
+            string query = "SELECT * FROM PostalCode WHERE PostalCode = @PostalCode";
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
