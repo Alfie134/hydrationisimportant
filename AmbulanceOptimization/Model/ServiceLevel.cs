@@ -13,15 +13,17 @@ namespace AmbulanceOptimization.Model
         public string Name { get; set; }   // Navn på serviceniveauet (f.eks. "1 timer, "Standard responstid" eller noget ?).
 
         public TimeSpan Time { get; set; }   // Tidsgrænse for serviceniveauet (servicemålene).
-   
-         // Constructor 
-        public ServiceLevel(int id, string name, TimeSpan time) {
+
+        // Constructor 
+        public ServiceLevel(int id, string name, TimeSpan time)
+        {
             {
                 Id = id;
                 Name = name;
                 Time = time;
             }
-    
+
+        }
     }
 }
 

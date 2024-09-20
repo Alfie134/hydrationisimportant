@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=WebshopTest.database.microsoft.net;Database=RegionSyd;User Id=Team09;Password=SQLerfedt123;"
+  }
+}
