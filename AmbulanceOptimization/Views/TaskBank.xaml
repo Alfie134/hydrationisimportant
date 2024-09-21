@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AmbulanceOptimization.View"
-        xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
+xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls;assembly=AmbulanceOptimization"
         mc:Ignorable="d"
         Title="TaskBank" Height="600" Width="900">
     <Grid>

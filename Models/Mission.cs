@@ -29,7 +29,7 @@ namespace Models
         public string PatientName { get; set; }
         public int? RouteId { get; set; }
         public int? UserId { get; set; }
-
+        public Vehicle AssignedVehicle { get; set; }  // Ny egenskab til at holde den tildelte ambulance
 
         // Constructor
         public Mission(int id, int regionId, string regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture,
