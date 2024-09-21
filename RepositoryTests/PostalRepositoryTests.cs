@@ -1,5 +1,3 @@
-using Configuration;
-using Microsoft.Data.SqlClient;
 using Models;
 using Repositories;
 using Repositories.Interfaces;
@@ -16,7 +14,7 @@ namespace RepositoryTests
         [TestMethod]
         public void GetAll_ReturnsAllRows()
         {
-           IEnumerable<Postal> postalsList = _postalRepository.GetAll();
+            IEnumerable<Postal> postalsList = _postalRepository.GetAll();
             Assert.IsTrue(postalsList.Count() != 0);
         }
 
