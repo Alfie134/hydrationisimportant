@@ -1,7 +1,7 @@
 ﻿<Window x:Class="AmbulanceOptimization.Views.DoneMissions"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls;assembly=AmbulanceOptimization"
+xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
         Title="Opgaver Under Udførelse" Height="600" Width="1000">
   
     <Grid>

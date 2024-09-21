@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Security.Cryptography; //  Bruges til hashing 
-using AmbulanceOptimization.View;
+using AmbulanceOptimization.Views;
 
 namespace AmbulanceOptimization
 {
