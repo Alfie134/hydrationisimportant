@@ -11,13 +11,13 @@ namespace Repositories
 {
     public class MissionRepository: IMissionRepository
     {
-        public void Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
+        public int Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
             var command = new SqlCommand(@$"INSERT INTO Mission (Type,Description,RegionTaskId,ExpectedDeparture,Duration,ExpectedArrival,
-PatientName,RegionId,RouteId,FromPostal,ToPostal,ServiceLevelId,UserId) VALUES 
-(@Type,@Description,@RegionTaskId,@ExpectedDeparture,@Duration,@ExpectedArrival,@PatientName,@RegionId,@RouteId,@FromPostal,
-@ToPostal,@ServiceLevelId,@UserId)", connection, transaction);
-
+                                        PatientName,RegionId,RouteId,FromPostal,ToPostal,ServiceLevelId,UserId) VALUES 
+                                        (@Type,@Description,@RegionTaskId,@ExpectedDeparture,@Duration,@ExpectedArrival,@PatientName,@RegionId,@RouteId,@FromPostal,
+                                        @ToPostal,@ServiceLevelId,@UserId); SELECT SCOPE_IDENTITY();", connection, transaction);
+            var id = 0;
             using (command)
             {
                 command.Parameters.AddWithValue("@Type", entity.Type);
@@ -28,30 +28,17 @@ PatientName,RegionId,RouteId,FromPostal,ToPostal,ServiceLevelId,UserId) VALUES
                 command.Parameters.AddWithValue("@ExpectedArrival", entity.ExpectedArrival);
                 command.Parameters.AddWithValue("@PatientName", entity.PatientName);
                 command.Parameters.AddWithValue("@RegionId", entity.RegionId);
-                // Handle RouteId being NULL
-                if (entity.RouteId.HasValue)
-                {
-                    command.Parameters.AddWithValue("@RouteId", entity.RouteId.Value);
-                }
-                else
-                {
-                    command.Parameters.AddWithValue("@RouteId", DBNull.Value);
-                }
                 command.Parameters.AddWithValue("@FromPostal", entity.FromPostalCode);
                 command.Parameters.AddWithValue("@ToPostal", entity.ToPostalCode);
                 command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId);
+                // Handle RouteId being NULL
+                command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? (object)entity.RouteId.Value : DBNull.Value);
                 // Handle UserId being NULL
-                if (entity.UserId.HasValue)
-                {
-                    command.Parameters.AddWithValue("@UserId", entity.UserId.Value);
-                }
-                else
-                {
-                    command.Parameters.AddWithValue("@UserId", DBNull.Value);
-                }
-               
-                command.ExecuteNonQuery();
+                command.Parameters.AddWithValue("@UserId", entity.UserId.HasValue ? (object)entity.UserId.Value : DBNull.Value);
+
+                id = Convert.ToInt32(command.ExecuteScalar());
             }
+            return id;
         }
 
         public void Delete(int id)

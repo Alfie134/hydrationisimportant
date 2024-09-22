@@ -35,7 +35,7 @@ namespace RepositoryTests
                 RegionId = 1082,
                 Description = "Mission 1 Description",
             };
-
+            int id;
             //Act
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -45,7 +45,7 @@ namespace RepositoryTests
                     try
                     {
                         // Pass the same connection and transaction to both repositories
-                        _missionRepository.Add(mission, connection, transaction);
+                        id = _missionRepository.Add(mission, connection, transaction);
                         // Commit the transaction if both operations succeed
                         transaction.Commit();
                     }
@@ -58,6 +58,7 @@ namespace RepositoryTests
                 }
             }
             //Assert
+            Assert.IsTrue(id > 0);
         }
 
     }
