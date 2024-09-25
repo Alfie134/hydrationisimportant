@@ -11,6 +11,13 @@ namespace Repositories
 {
     public class MissionRepository: IMissionRepository
     {
+        private readonly string _connectionString;
+
+        public MissionRepository(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public int Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
             var command = new SqlCommand(@$"INSERT INTO Mission (Type,Description,RegionTaskId,ExpectedDeparture,Duration,ExpectedArrival,
@@ -42,7 +49,6 @@ namespace Repositories
         }
 
         // DELETE 
-
         public bool Delete(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
             return DeleteById(entity.Id, connection, transaction);
@@ -58,13 +64,49 @@ namespace Repositories
                 return rowsAffected > 0;
             }
         }
-    
 
-       
 
+        //IREAD
         public IEnumerable<Mission> GetAll()
         {
-            throw new NotImplementedException();
+            var missions = new List<Mission>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("SELECT * FROM Mission", connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // Opret og tilføj en Mission direkte her
+                        var mission = new Mission
+                        {
+                            //Skal vi nullable handle Id og RegionalTaskId ? :) 
+
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Type = (TaskType)Enum.Parse(typeof(TaskType), reader.GetString(reader.GetOrdinal("Type"))),
+                            Description = reader.GetString(reader.GetOrdinal("Description")),  
+                            RegionalTaskId = reader.GetInt32(reader.GetOrdinal("RegionTaskId")),
+                            ExpectedDeparture = reader.GetDateTime(reader.GetOrdinal("ExpectedDeparture")),
+                            DurationInMin = reader.GetInt32(reader.GetOrdinal("Duration")),
+                            ExpectedArrival = reader.GetDateTime(reader.GetOrdinal("ExpectedArrival")),
+                            PatientName = reader.GetString(reader.GetOrdinal("PatientName")),
+                            RegionId = reader.GetInt32(reader.GetOrdinal("RegionId")),
+                            FromPostalCode = reader.GetInt32(reader.GetOrdinal("FromPostalCode")),
+                            ToPostalCode = reader.GetInt32(reader.GetOrdinal("ToPostal")),
+                            ServiceLevelId = reader.GetInt32(reader.GetOrdinal("ServiceLevelId")),
+                            // Handle nullable værdier
+                            RouteId = reader.IsDBNull(reader.GetOrdinal("RouteId")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("RouteId")),
+                            UserId = reader.IsDBNull(reader.GetOrdinal("UserId")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("UserId"))
+                        };
+
+                        missions.Add(mission); // Tilføj mission til listen
+                    }
+                }
+            }
+
+            return missions;
         }
 
         public Mission GetById(int id)
