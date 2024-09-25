@@ -1,12 +1,60 @@
 ﻿<Window x:Class="AmbulanceOptimization.Views.DrivingMissions"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls;assembly=AmbulanceOptimization"
-        mc:Ignorable="d"
-        Title="DrivingMissions" Height="450" Width="800">
+xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
+        Title="KØRENDE/KOMMENDE KØRSLER" Height="600" Width="1000">
+
     <Grid>
-        
+        <!-- User controls -->
+        <controls:BackToMenu/>
+        <controls:ClockControl/>
+        <controls:RegionSouthLogo/>
+        <controls:UserProfileControl/>
+        <!-- Header -->
+        <TextBlock Text="KØRENDE/KOMMENDE KØRSLER" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0"/>
+
+        <!-- DataGrid til at vise missioner -->
+        <DataGrid x:Name="GoingMissionDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding GoingMissions}"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="30,100,30,30" IsReadOnly="True" CanUserResizeRows="False">
+            <DataGrid.Columns>
+                <!-- Type -->
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
+
+                <!-- Opgave ID -->
+                <DataGridTextColumn Header="Opgave ID" Binding="{Binding TaskId}" Width="100" />
+
+                <!-- Beskrivelse -->
+                <DataGridTextColumn Header="Beskrivelse" Binding="{Binding Description}" Width="200" />
+
+                <!-- Servicemål -->
+                <DataGridTextColumn Header="Servicemål" Binding="{Binding ServiceLevel}" Width="100" />
+
+                <!-- Max Varighed -->
+                <DataGridTextColumn Header="Max Varighed/min" Binding="{Binding MaxWaitTime}" Width="120" />
+
+                <!-- Personlig information -->
+                <DataGridTextColumn Header="Personlig information" Binding="{Binding PersonalInfo}" Width="200" />
+
+                <!-- Fra Adresse -->
+                <DataGridTextColumn Header="Fra Adresse" Binding="{Binding FromAddress}" Width="150" />
+
+                <!-- Til Adresse -->
+                <DataGridTextColumn Header="Til Adresse" Binding="{Binding ToAddress}" Width="150" />
+
+                <!-- Tid og dato -->
+                <DataGridTextColumn Header="Tid og Dato" Binding="{Binding DateTime}" Width="150" />
+
+                <!-- Handling: Gør ledig knap -->
+                <DataGridTemplateColumn Header="Handling" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Gør ledig" Command="{Binding MakeAvailableCommand}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
     </Grid>
 </Window>
