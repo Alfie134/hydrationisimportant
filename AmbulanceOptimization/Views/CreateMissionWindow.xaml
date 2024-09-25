@@ -1,0 +1,48 @@
+﻿<Window x:Class="AmbulanceOptimization.CreateMissionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AmbulanceOptimization"
+        mc:Ignorable="d"
+        Title="CreateMissionWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <StackPanel  Orientation="Horizontal" >
+                <Label > RegionId</Label>
+                <TextBox Width="100"></TextBox>
+            </StackPanel>
+
+            <StackPanel  Orientation="Horizontal" >
+                <Label >Regionalt opgaveId</Label>
+                <TextBox Width="100"></TextBox>
+            </StackPanel>
+
+            <StackPanel  Orientation="Horizontal" >
+                <Label >Opgave type</Label>
+                <ComboBox Width="100"></ComboBox>
+            </StackPanel>
+
+
+            <StackPanel  Orientation="Horizontal" >
+                <Label >Beskrivelse</Label>
+                <TextBlock Width="100" Height="100">Indtast beskrivelse</TextBlock>
+            </StackPanel>
+
+
+
+
+        </StackPanel>
+    </Grid>
+</Window>
