@@ -41,10 +41,26 @@ namespace Repositories
             return id;
         }
 
-        public void Delete(int id)
+        // DELETE 
+
+        public bool Delete(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
-            throw new NotImplementedException();
+            return DeleteById(entity.Id, connection, transaction);
         }
+
+        public bool DeleteById(int id, SqlConnection connection, SqlTransaction? transaction = null)
+        {
+            var command = new SqlCommand("DELETE FROM Mission WHERE Id = @Id", connection, transaction);
+            using (command)
+            {
+                command.Parameters.AddWithValue("@Id", id);
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+        }
+    
+
+       
 
         public IEnumerable<Mission> GetAll()
         {
