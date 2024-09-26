@@ -1,54 +1,55 @@
 ﻿using Configuration;
-using Microsoft.Data.SqlClient;
 using Models;
+using Microsoft.Data.SqlClient;
 using Repositories.Interfaces;
 
 namespace Repositories
 {
-    public class PostalRepository : IPostalRepository
+    public class MunicipalityRepository : IMunicipalityRepository
     {
         private readonly string _connectionString = new AppConfig().ConnectionString;
         
-        public IEnumerable<Postal> GetAll()
+        public IEnumerable<Municipality> GetAll()
         {
-            var postals = new List<Postal>();
-            string query = "SELECT * FROM PostalCode";
+            var municipalities = new List<Municipality>();
+            string query = "SELECT * FROM Municipality";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 connection.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                using(SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        postals.Add(new Postal((int)reader["PostalCode"], (string)reader["City"]));
+                        municipalities.Add(new Municipality((int)reader["Id"], (string)reader["Municipality"], (int)reader["RegionId"], (List<int>)reader[""]));
                     }
                 }
             }
-            return postals;
+            return municipalities;
         }
 
-        public Postal GetById(int id)
+
+        public Municipality GetById(int id)
         {
-            Postal postal = null;
-            string query = "SELECT * FROM PostalCode WHERE PostalCode = @PostalCode";
+            Municipality municipality = null;
+            string query = "SELECT * FROM Municipality WHERE Id = @Id";
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@PostalCode", id);
+                command.Parameters.AddWithValue("Id", id);
                 connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        postal = new Postal((int)reader["PostalCode"], (string)reader["City"]);
+                        municipality = new Municipality((int)reader["Id"], (string)reader["Municipality"], (int)reader["RegionId"], (List<int>)reader[""]);
                     }
                 }
             }
-            return postal;
+            return municipality;
         }
     }
 }

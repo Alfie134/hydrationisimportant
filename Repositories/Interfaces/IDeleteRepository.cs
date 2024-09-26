@@ -15,13 +15,10 @@ namespace Repositories.Interfaces
         // Returnerer true, hvis sletning lykkedes, ellers false
 
 
-        // MEd entitet der skal slettes
-        bool Delete(T entity, SqlConnection connection, SqlTransaction? transaction = null);
+        // Med entitet der skal slettes
+        bool Delete(T entity);
 
         // Eller med Id der skal slettes 
-        bool DeleteById(int id, SqlConnection connection, SqlTransaction? transaction = null);
-
+        bool DeleteById(int id);
         }
-
-
 }

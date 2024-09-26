@@ -9,6 +9,6 @@ namespace Repositories.Interfaces
 {
     public interface ICreateRepository<in T>
     {
-        int Add(T entity, SqlConnection connection, SqlTransaction? transaction = null);
+        int Add(T entity);
     }
 }

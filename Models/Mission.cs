@@ -44,8 +44,6 @@ namespace Models
         public Mission()
         {
         }
-
-
     }
 
 }
