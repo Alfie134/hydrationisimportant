@@ -17,7 +17,8 @@ namespace Repositories
         {
             _connectionString = connectionString;
         }
-
+     
+     
         public int Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
             var command = new SqlCommand(@$"INSERT INTO Mission (Type,Description,RegionTaskId,ExpectedDeparture,Duration,ExpectedArrival,
@@ -36,8 +37,8 @@ namespace Repositories
                 command.Parameters.AddWithValue("@PatientName", entity.PatientName);
                 command.Parameters.AddWithValue("@RegionId", entity.RegionId);
                 command.Parameters.AddWithValue("@FromPostal", entity.FromPostalCode);
-                command.Parameters.AddWithValue("@ToPostal", entity.ToPostalCode);
-                command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId);
+                command.Parameters.AddWithValue("@ToPostal", entity.ToPostalCode); 
+                command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId); 
                 // Handle RouteId being NULL
                 command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? (object)entity.RouteId.Value : DBNull.Value);
                 // Handle UserId being NULL
@@ -66,14 +67,14 @@ namespace Repositories
         }
 
 
-        //IREAD
+        //READ
         public IEnumerable<Mission> GetAll()
         {
             var missions = new List<Mission>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Open();
+                connection.Open(); //lukker selv igen 
                 using (var command = new SqlCommand("SELECT * FROM Mission", connection))
                 using (var reader = command.ExecuteReader())
                 {
@@ -87,13 +88,13 @@ namespace Repositories
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Type = (TaskType)Enum.Parse(typeof(TaskType), reader.GetString(reader.GetOrdinal("Type"))),
                             Description = reader.GetString(reader.GetOrdinal("Description")),  
-                            RegionalTaskId = reader.GetInt32(reader.GetOrdinal("RegionTaskId")),
+                            RegionalTaskId = reader.GetString(reader.GetOrdinal("RegionTaskId")),
                             ExpectedDeparture = reader.GetDateTime(reader.GetOrdinal("ExpectedDeparture")),
                             DurationInMin = reader.GetInt32(reader.GetOrdinal("Duration")),
                             ExpectedArrival = reader.GetDateTime(reader.GetOrdinal("ExpectedArrival")),
                             PatientName = reader.GetString(reader.GetOrdinal("PatientName")),
                             RegionId = reader.GetInt32(reader.GetOrdinal("RegionId")),
-                            FromPostalCode = reader.GetInt32(reader.GetOrdinal("FromPostalCode")),
+                            FromPostalCode = reader.GetInt32(reader.GetOrdinal("FromPostal")),
                             ToPostalCode = reader.GetInt32(reader.GetOrdinal("ToPostal")),
                             ServiceLevelId = reader.GetInt32(reader.GetOrdinal("ServiceLevelId")),
                             // Handle nullable værdier
@@ -111,10 +112,47 @@ namespace Repositories
 
         public Mission GetById(int id)
         {
-            throw new NotImplementedException();
-        }
+            Mission mission = null;
+            string query = "SELECT * FROM Mission WHERE Id = @Id";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Id", id);
+                connection.Open();
 
-        public void Update(Mission entity)
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        mission = new Mission   
+                        {
+                            Id = (int)reader["Id"],
+                            Type = (TaskType)Enum.Parse(typeof(TaskType), reader["Type"].ToString()),
+                            Description = reader["Description"].ToString(),
+                            RegionalTaskId = reader.IsDBNull(reader.GetOrdinal("RegionTaskId")) ? null : reader.GetInt32(reader.GetOrdinal("RegionTaskId")).ToString(),
+                            ExpectedDeparture = (DateTime)reader["ExpectedDeparture"],
+                            DurationInMin = (int)reader["Duration"],
+                            ExpectedArrival = (DateTime)reader["ExpectedArrival"],
+                            PatientName = reader["PatientName"].ToString(),
+                            RegionId = (int)reader["RegionId"],                      
+                            FromPostalCode = reader.GetInt32(reader.GetOrdinal("FromPostal")),
+                            ToPostalCode = reader.GetInt32(reader.GetOrdinal("ToPostal")),
+                            ServiceLevelId = (int)reader["ServiceLevelId"],
+                            // Nullable felter
+                            RouteId = reader.IsDBNull(reader.GetOrdinal("RouteId")) ? (int?)null : (int)reader["RouteId"],
+                            UserId = reader.IsDBNull(reader.GetOrdinal("UserId")) ? (int?)null : (int)reader["UserId"],
+
+                        };
+                    }
+                }
+            }
+            return mission;
+        }
+    
+
+
+
+public void Update(Mission entity)
         {
             throw new NotImplementedException();
         }

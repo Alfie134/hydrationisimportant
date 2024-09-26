@@ -9,10 +9,25 @@ namespace RepositoryTests
     [TestClass]
     public class MissionRepositoryTests
     {
+        // ------------ Jeg havde fejl så jeg prøver lige udkommentere og bytte med nedenstående kode -----------
 
-        private IMissionRepository _missionRepository = new MissionRepository();
+        // private IMissionRepository _missionRepository = new MissionRepository(_connectionString);
+        // private readonly string _connectionString = new AppConfig().ConnectionString;
 
-        private readonly string _connectionString = new AppConfig().ConnectionString;
+        // ------------ Jeg havde fejl så jeg prøver lige udkommentere ovenstående og bytte med nedenstående kode -----------
+
+        // Connection string defineres som readonly og initialiseres i konstruktøren
+        private readonly string _connectionString;
+        private readonly IMissionRepository _missionRepository;
+
+        public MissionRepositoryTests()
+        {
+            // Initialisering af connection string fra AppConfig
+            _connectionString = new AppConfig().ConnectionString;
+
+            // Initialisering af MissionRepository med connection string
+            _missionRepository = new MissionRepository(_connectionString);
+        }
 
 
         [TestMethod]
