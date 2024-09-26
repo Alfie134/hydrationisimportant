@@ -48,6 +48,7 @@ namespace Repositories
 
                         id = Convert.ToInt32(command.ExecuteScalar());
                     }
+                    transaction.Commit();
                     return id;
                 }
             }
@@ -77,14 +78,15 @@ namespace Repositories
             }
         }
 
-        //IREAD
+
+        //READ
         public IEnumerable<Mission> GetAll()
         {
             var missions = new List<Mission>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Open();
+                connection.Open(); //lukker selv igen 
                 using (var command = new SqlCommand("SELECT * FROM Mission", connection))
                 using (var reader = command.ExecuteReader())
                 {
@@ -137,18 +139,20 @@ namespace Repositories
                 Id = reader.GetInt32(reader.GetOrdinal("Id")),
                 Type = (TaskType)Enum.Parse(typeof(TaskType), reader.GetString(reader.GetOrdinal("Type"))),
                 Description = reader.GetString(reader.GetOrdinal("Description")),
-                RegionalTaskId = reader.GetInt32(reader.GetOrdinal("RegionTaskId")),
+                RegionalTaskId = reader.GetString(reader.GetOrdinal("RegionTaskId")),
                 ExpectedDeparture = reader.GetDateTime(reader.GetOrdinal("ExpectedDeparture")),
                 DurationInMin = reader.GetInt32(reader.GetOrdinal("Duration")),
                 ExpectedArrival = reader.GetDateTime(reader.GetOrdinal("ExpectedArrival")),
                 PatientName = reader.GetString(reader.GetOrdinal("PatientName")),
                 RegionId = reader.GetInt32(reader.GetOrdinal("RegionId")),
-                FromPostalCode = reader.GetInt32(reader.GetOrdinal("FromPostalCode")),
+                FromPostalCode = reader.GetInt32(reader.GetOrdinal("FromPostal")),
                 ToPostalCode = reader.GetInt32(reader.GetOrdinal("ToPostal")),
                 ServiceLevelId = reader.GetInt32(reader.GetOrdinal("ServiceLevelId")),
                 // Handle nullable værdier
                 RouteId = reader.IsDBNull(reader.GetOrdinal("RouteId")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("RouteId")),
                 UserId = reader.IsDBNull(reader.GetOrdinal("UserId")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("UserId"))
+
+                //Hvorfor bruges to- og fromaddress variablerne?
             };
         }
     }

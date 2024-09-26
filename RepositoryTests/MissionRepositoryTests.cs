@@ -17,7 +17,7 @@ namespace RepositoryTests
             //Arrange
             Mission mission = new Mission()
             {
-                RegionalTaskId = 1,
+                RegionalTaskId = "TestId",
                 ExpectedDeparture = DateTime.Now,
                 DurationInMin = 120,
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
@@ -30,7 +30,7 @@ namespace RepositoryTests
                 RegionId = 1082,
                 Description = "Mission 1 Description",
             };
-            int id = _missionRepository.Add(mission);
+            int id = _missionRepository.Add(mission); //Hver gang metoden testes, tilføjes ny data i databasen
 
             //Assert
             Assert.IsTrue(id > 0);
@@ -46,7 +46,7 @@ namespace RepositoryTests
         [TestMethod]
         public void GetById_ReturnsCorrectInfo()
         {
-            Mission tempMission = _missionRepository.GetById(783);
+            Mission tempMission = _missionRepository.GetById(3);
 //            Assert.IsNotNull(tempMission);   
 //            Assert.IsTrue(tempMission.Id == "Facility");
         }

@@ -10,10 +10,12 @@ namespace Models
     {
         public int Id { get; set; }  // Primær nøgle
         public int RegionId { get; set; }  // Fremmed nøgle til Region
-        public int RegionalTaskId { get; set; }  // Regionalt specifikt opgave-ID
+        public string RegionalTaskId { get; set; }  // Regionalt specifikt opgave-ID
 
         public TaskType Type { get; set; }  // Typen af opgave (f.eks. Ambulance, Patienttransport)
         public string Description { get; set; }  // Opgavebeskrivelse
+
+        //------ToAddress og FromAddress bruges ikke eller refereres ikke til nogen steder. 
 
         public ServiceLevel ServiceLevel { get; set; }
         public int ServiceLevelId { get; set; }
@@ -32,7 +34,7 @@ namespace Models
         public Vehicle AssignedVehicle { get; set; }  // Ny egenskab til at holde den tildelte ambulance
 
         // Constructor
-        public Mission(int id, int regionId, int regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture,
+        public Mission(int id, int regionId, string regionalTaskId, TaskType type, string description, ServiceLevel serviceLevel, DateTime expectedDeparture,
                      int durationInMin, DateTime expectedArrival, string fromAddress, Postal fromPostal, string toAddress, Postal toPostal, string patientName)
 
         {
@@ -41,6 +43,7 @@ namespace Models
             FromPostal = fromPostal; ToAddress = toAddress; ToPostal = toPostal; PatientName = patientName;
         }
 
+        //Parameterløs 
         public Mission()
         {
         }
