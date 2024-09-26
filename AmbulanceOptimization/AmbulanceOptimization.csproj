@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\ProfileButton.png" />
     <None Remove="Images\Region Syddanmark Logo.png" />
     <None Remove="Views\Images\ProfileButton.png" />
     <None Remove="Views\Images\Region Syddanmark Logo.png" />
@@ -26,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\ProfileButton.png" />
     <Resource Include="Views\Images\ProfileButton.png" />
     <Resource Include="Views\Images\Region Syddanmark Logo.png" />
   </ItemGroup>
