@@ -23,7 +23,7 @@ namespace Repositories
                 {
                     while (reader.Read())
                     {
-                        municipalities.Add(new Municipality((int)reader["Id"], (string)reader["Municipality"], (int)reader["RegionId"], (List<int>)reader[""]));
+                        municipalities.Add(new Municipality((int)reader["Id"], (string)reader["Name"], (int)reader["RegionId"]));
                     }
                 }
             }
@@ -45,7 +45,7 @@ namespace Repositories
                 {
                     if (reader.Read())
                     {
-                        municipality = new Municipality((int)reader["Id"], (string)reader["Municipality"], (int)reader["RegionId"], (List<int>)reader[""]);
+                        municipality = new Municipality((int)reader["Id"], (string)reader["Name"], (int)reader["RegionId"]);
                     }
                 }
             }

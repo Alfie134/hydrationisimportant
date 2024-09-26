@@ -15,12 +15,11 @@ namespace Models
         public List<int> PostalCodes { get; set; }  // Liste over postnumre i kommunen
 
         // Constructor
-        public Municipality(int id, string name, int regionId, List<int> postalCode)
+        public Municipality(int id, string name, int regionId)
         {
             Id = id;
             Name = name;
             RegionId = regionId;
-            PostalCodes = postalCode ?? new List<int>(); //initiere listen over postnumre 
         }
 
 

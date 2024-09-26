@@ -19,9 +19,9 @@ namespace RepositoryTests
         [TestMethod]
         public void GetById_ReturnCorrectInfo()
         {
-            Municipality tempMunicipality = _municipalityRepository.GetById(0);
+            Municipality tempMunicipality = _municipalityRepository.GetById(1);
             Assert.IsNotNull(tempMunicipality);
-            Assert.IsTrue(tempMunicipality.Name == "");
+            Assert.IsTrue(tempMunicipality.Name == "Silkebprg");
         }
     }
 }
