@@ -7,7 +7,14 @@ namespace RepositoryTests
     [TestClass]
     public class MunicipalityRepositoryTests
     {
-        private IMunicipalityRepository _municipalityRepository = new MunicipalityRepository();
+        public TestContext TestContext { get; set; }
+        private IMunicipalityRepository _municipalityRepository;
+
+        [TestInitialize]
+        public void InitializeTest()
+        {
+            _municipalityRepository = new MunicipalityRepository((string)TestContext.Properties["testdatabaseURL"]);
+        }
 
         [TestMethod]
         public void GetAll_ReturnAllRows()

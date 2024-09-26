@@ -7,8 +7,11 @@ namespace Repositories
 {
     public class RegionRepository : IRegionRepository
     {
-        private readonly string _connectionString = new AppConfig().ConnectionString;
-
+        private readonly string _connectionString;
+        public RegionRepository(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
 
         public IEnumerable<Region> GetAll()
         {

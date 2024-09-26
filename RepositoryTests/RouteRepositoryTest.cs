@@ -6,7 +6,14 @@ namespace RepositoryTests
 {
     public class RouteRepositoryTest
     {
-        private IRouteRepository _routeRepository = new RouteRepository();
+        public TestContext TestContext { get; set; }
+        private IRouteRepository _routeRepository;
+
+        [TestInitialize]
+        public void InitializeTest()
+        {
+            _routeRepository = new RouteRepository((string)TestContext.Properties["testdatabaseURL"]);
+        }
 
         [TestMethod]
         public void GetAll_ReturnsAllRows()

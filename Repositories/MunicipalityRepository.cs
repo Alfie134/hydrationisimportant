@@ -7,7 +7,12 @@ namespace Repositories
 {
     public class MunicipalityRepository : IMunicipalityRepository
     {
-        private readonly string _connectionString = new AppConfig().ConnectionString;
+        private readonly string _connectionString;
+
+        public MunicipalityRepository(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         
         public IEnumerable<Municipality> GetAll()
         {

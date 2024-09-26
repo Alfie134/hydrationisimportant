@@ -7,8 +7,13 @@ namespace Repositories
 {
     public class PostalRepository : IPostalRepository
     {
-        private readonly string _connectionString = new AppConfig().ConnectionString;
-        
+        private readonly string _connectionString;
+
+        public PostalRepository(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public IEnumerable<Postal> GetAll()
         {
             var postals = new List<Postal>();

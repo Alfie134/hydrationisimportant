@@ -7,7 +7,13 @@ namespace Repositories
 {
     public class RouteRepository : IRouteRepository
     {
-        private readonly string _connectionString = new AppConfig().ConnectionString;
+        private readonly string _connectionString;
+
+        public RouteRepository(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public IEnumerable<Route> GetAll()
         {
             var routes = new List<Route>();

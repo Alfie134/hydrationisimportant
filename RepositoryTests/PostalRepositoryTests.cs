@@ -7,8 +7,14 @@ namespace RepositoryTests
     [TestClass]
     public class PostalRepositoryTests
     {
-        
-        private IPostalRepository _postalRepository = new PostalRepository();
+        public TestContext TestContext { get; set; }
+        private IPostalRepository _postalRepository;
+
+        [TestInitialize]
+        public void InitializeTest()
+        {
+            _postalRepository = new PostalRepository((string)TestContext.Properties["testdatabaseURL"]);
+        }
 
 
         [TestMethod]

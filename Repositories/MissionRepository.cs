@@ -12,7 +12,11 @@ namespace Repositories
 {
     public class MissionRepository: IMissionRepository
     {
-        private readonly string _connectionString = new AppConfig().ConnectionString;
+        private readonly string _connectionString;
+
+        public MissionRepository(string connectionString) {
+            _connectionString = connectionString;
+        }
 
         public int Add(Mission entity)
         {
