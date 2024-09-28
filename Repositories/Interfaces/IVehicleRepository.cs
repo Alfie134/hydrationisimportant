@@ -2,7 +2,7 @@
 
 namespace Repositories.Interfaces
 {
-    public interface IPostalRepository: IReadRepository<Postal>
+    public interface IVehicleRepository : IReadRepository<Vehicle>
     {
     }
 }

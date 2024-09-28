@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Models
+﻿namespace Models
 {
     public class ServiceLevel
     {
@@ -12,7 +6,7 @@ namespace Models
 
         public string Name { get; set; }   // Navn på serviceniveauet (f.eks. "1 timer, "Standard responstid" eller noget ?).
 
-        public TimeSpan Time { get; set; }   // Tidsgrænse for serviceniveauet (servicemålene).
+        public TimeSpan Timespan { get; set; }   // Tidsgrænse for serviceniveauet (servicemålene).
 
         // Constructor 
         public ServiceLevel(int id, string name, TimeSpan time)
@@ -20,7 +14,7 @@ namespace Models
             {
                 Id = id;
                 Name = name;
-                Time = time;
+                Timespan = time;
             }
 
         }

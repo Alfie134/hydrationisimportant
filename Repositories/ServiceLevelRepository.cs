@@ -4,19 +4,19 @@ using Microsoft.Data.SqlClient;
 
 namespace Repositories
 {
-    public class PostalRepository : IPostalRepository
+    public class ServiceLevelRepository : IServiceLevelRepository
     {
         private readonly string _connectionString;
 
-        public PostalRepository(string connectionString)
+        public ServiceLevelRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public IEnumerable<Postal> GetAll()
+        public IEnumerable<ServiceLevel> GetAll()
         {
-            var postals = new List<Postal>();
-            string query = "SELECT * FROM PostalCode";
+            var serviceLevels = new List<ServiceLevel>();
+            string query = "SELECT * FROM ServiceLevel";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -27,33 +27,38 @@ namespace Repositories
                 {
                     while (reader.Read())
                     {
-                        postals.Add(new Postal((int)reader["PostalCode"], (string)reader["City"]));
+                        serviceLevels.Add(SerializeServiceLevel(reader));
                     }
                 }
             }
-            return postals;
-        }
+            return serviceLevels;
+        }   
 
-        public Postal GetById(int id)
+        public ServiceLevel GetById(int id)
         {
-            Postal postal = null;
-            string query = "SELECT * FROM PostalCode WHERE PostalCode = @PostalCode";
-            
+            ServiceLevel serviceLevel = null;
+            string query = "SELECT * FROM ServiceLevel WHERE Id = @Id";
+
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@PostalCode", id);
+                command.Parameters.AddWithValue("@Id", id);
                 connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        postal = new Postal((int)reader["PostalCode"], (string)reader["City"]);
+                        serviceLevel = SerializeServiceLevel(reader);
                     }
                 }
             }
-            return postal;
+            return serviceLevel;
+        }
+
+        private ServiceLevel SerializeServiceLevel(SqlDataReader reader)
+        {
+            return new ServiceLevel(reader.GetInt32(reader.GetOrdinal("Id")), reader.GetString(reader.GetOrdinal("Name")), reader.GetTimeSpan(reader.GetOrdinal("TimeSpan")));
         }
     }
 }

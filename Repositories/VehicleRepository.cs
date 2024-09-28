@@ -1,22 +1,23 @@
 ﻿using Models;
-using Repositories.Interfaces;
+using Repositories;
 using Microsoft.Data.SqlClient;
+using Repositories.Interfaces;
 
 namespace Repositories
 {
-    public class PostalRepository : IPostalRepository
+    public class VehicleRepository : IVehicleRepository
     {
         private readonly string _connectionString;
 
-        public PostalRepository(string connectionString)
+        public VehicleRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public IEnumerable<Postal> GetAll()
+        public IEnumerable<Vehicle> GetAll()
         {
-            var postals = new List<Postal>();
-            string query = "SELECT * FROM PostalCode";
+            var vehicles = new List<Vehicle>();
+            string query = "SELECT * FROM Vehicle";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -27,33 +28,40 @@ namespace Repositories
                 {
                     while (reader.Read())
                     {
-                        postals.Add(new Postal((int)reader["PostalCode"], (string)reader["City"]));
+                        vehicles.Add(SerializeUser(reader));
                     }
                 }
             }
-            return postals;
+            return vehicles;
         }
 
-        public Postal GetById(int id)
+        public Vehicle GetById(int id)
         {
-            Postal postal = null;
-            string query = "SELECT * FROM PostalCode WHERE PostalCode = @PostalCode";
-            
+            Vehicle vehicle = null;
+            string query = "SELECT * FROM Vehicle WHERE Id = @Id";
+
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@PostalCode", id);
+                command.Parameters.AddWithValue("@Id", id);
                 connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        postal = new Postal((int)reader["PostalCode"], (string)reader["City"]);
+                        vehicle = SerializeUser(reader);
                     }
                 }
             }
-            return postal;
+            return vehicle;
+        }
+
+        public Vehicle SerializeUser(SqlDataReader reader)
+        {
+            return new Vehicle(reader.GetInt32(reader.GetOrdinal("Id")),
+                (VehicleType)Enum.Parse(typeof(VehicleType), reader.GetString(reader.GetOrdinal("VehicleType"))),
+                reader.GetInt32(reader.GetOrdinal("OperatorId")));
         }
     }
 }
