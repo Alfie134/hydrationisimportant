@@ -134,6 +134,7 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
+        //Tilføje disse til de andre repositories også 
         private Mission SerializeMission(SqlDataReader reader)
         {
             return new Mission

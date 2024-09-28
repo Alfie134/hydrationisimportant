@@ -4,7 +4,8 @@ using Repositories.Interfaces;
 
 namespace Repositories.Interfaces
 {
-    public interface IPostalRepository: IReadRepository<Postal>
+    public interface IOperatorRepository:IReadRepository<Operator>
     {
     }
 }
+    

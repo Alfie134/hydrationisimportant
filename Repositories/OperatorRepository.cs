@@ -4,19 +4,19 @@ using Microsoft.Data.SqlClient;
 
 namespace Repositories
 {
-    public class PostalRepository : IPostalRepository
+    public class OperatorRepository:IOperatorRepository
     {
         private readonly string _connectionString;
 
-        public PostalRepository(string connectionString)
+        public OperatorRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public IEnumerable<Postal> GetAll()
+        public IEnumerable<Operator> GetAll()
         {
-            var postals = new List<Postal>();
-            string query = "SELECT * FROM PostalCode";
+            var operators = new List<Operator>();
+            string query = "SELECT * FROM Operator";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -27,32 +27,33 @@ namespace Repositories
                 {
                     while (reader.Read())
                     {
-                        postals.Add(new Postal((int)reader["PostalCode"], (string)reader["City"]));
+                        operators.Add(new Operator((int)reader["OperatorId"], (string)reader["Name"]));
                     }
                 }
             }
-            return postals;
+            return operators;
         }
 
-        public Postal GetById(int id)
+        public Operator GetById(int id)
         {
-            Postal postal = null;
-            string query = "SELECT * FROM PostalCode WHERE PostalCode = @PostalCode";
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            Operator operatorr = null;
+            string query = "SELECT * FROM Operator WHERE OperatorId = @OperatorId";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString)) 
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@PostalCode", id);
+                command.Parameters.AddWithValue("@OperatorId", id);
                 connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        postal = new Postal((int)reader["PostalCode"], (string)reader["City"]);
+                        operatorr = new Operator((int)reader["OperatorId"], (string)reader["Name"]); 
                     }
                 }
             }
-            return postal;
+            return operatorr;
         }
     }
 }
