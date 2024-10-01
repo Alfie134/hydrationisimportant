@@ -9,9 +9,9 @@ namespace Repositories
     {
         private readonly string _connectionString;
 
-        public RouteRepository(string connectionString)
+        public RouteRepository()
         {
-            _connectionString = connectionString;
+            _connectionString = new AppConfig().ConnectionString;
         }
 
         public IEnumerable<Route> GetAll()

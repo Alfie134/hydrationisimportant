@@ -7,13 +7,12 @@ namespace RepositoryTests
     [TestClass]
     public class OperatorRepositoryTests
     {
-        public TestContext TestContext { get; set; }
         private IOperatorRepository _operatorRepository;
 
         [TestInitialize]
         public void InitializeTest() 
         {
-            _operatorRepository = new OperatorRepository((string)TestContext.Properties["testdatabaseURL"]);
+            _operatorRepository = new OperatorRepository();
         }
 
         [TestMethod]

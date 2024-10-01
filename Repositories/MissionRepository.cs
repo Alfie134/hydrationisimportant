@@ -14,8 +14,8 @@ namespace Repositories
     {
         private readonly string _connectionString;
 
-        public MissionRepository(string connectionString) {
-            _connectionString = connectionString;
+        public MissionRepository() {
+            _connectionString = new AppConfig().ConnectionString;
         }
 
         public int Add(Mission entity)

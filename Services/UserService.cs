@@ -5,7 +5,7 @@ using Repositories.Interfaces;
 
 namespace Services
 {
-    internal class UserService
+    public class UserService
     {
 
         private readonly IUserRepository _userRepository;
@@ -13,7 +13,7 @@ namespace Services
         public UserService()
         {
             var config = new AppConfig();
-            _userRepository = new UserRepository(config.ConnectionString);
+            _userRepository = new UserRepository();
         }
     
         public User UserLogin(string username, string password)

@@ -9,9 +9,9 @@ namespace Repositories
     {
         private readonly string _connectionString;
 
-        public MunicipalityRepository(string connectionString)
+        public MunicipalityRepository()
         {
-            _connectionString = connectionString;
+            _connectionString = new AppConfig().ConnectionString;
         }
         
         public IEnumerable<Municipality> GetAll()

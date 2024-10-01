@@ -7,13 +7,12 @@ namespace RepositoryTests
     [TestClass]
     public class ServiceLevelRepositoryTests
     {
-        public TestContext TestContext { get; set; }
         private IServiceLevelRepository _serviceLevelRepository;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            _serviceLevelRepository = new ServiceLevelRepository((string)TestContext.Properties["testdatabaseURL"]);
+            _serviceLevelRepository = new ServiceLevelRepository();
         }
 
 

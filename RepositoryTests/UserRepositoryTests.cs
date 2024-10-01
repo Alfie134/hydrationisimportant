@@ -7,13 +7,12 @@ namespace RepositoryTests
     [TestClass]
     public class UserRepositoryTests
     {
-        public TestContext TestContext { get; set; }
         private IUserRepository _userRepository;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            _userRepository = new UserRepository((string)TestContext.Properties["testdatabaseURL"]);
+            _userRepository = new UserRepository();
         }
 
         [TestMethod]

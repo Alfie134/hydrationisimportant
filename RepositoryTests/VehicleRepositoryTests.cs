@@ -7,13 +7,12 @@ namespace RepositoryTests
     [TestClass]
     public class VehicleRepositoryTests
     {
-        public TestContext TestContext { get; set; }
         private IVehicleRepository _vehicleRepository;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            _vehicleRepository = new VehicleRepository((string)TestContext.Properties["testdatabaseURL"]);
+            _vehicleRepository = new VehicleRepository();
         }
 
 

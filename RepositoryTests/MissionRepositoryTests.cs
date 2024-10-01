@@ -9,13 +9,12 @@ namespace RepositoryTests
     [TestClass]
     public class MissionRepositoryTests
     {
-        public TestContext TestContext { get; set; }
         private IMissionRepository _missionRepository;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            _missionRepository = new MissionRepository((string)TestContext.Properties["testdatabaseURL"]);
+            _missionRepository = new MissionRepository();
         }
 
 

@@ -2,6 +2,7 @@
 using Repositories;
 using Microsoft.Data.SqlClient;
 using Repositories.Interfaces;
+using Configuration;
 
 namespace Repositories
 {
@@ -9,9 +10,9 @@ namespace Repositories
     {
         private readonly string _connectionString;
 
-        public VehicleRepository(string connectionString)
+        public VehicleRepository()
         {
-            _connectionString = connectionString;
+            _connectionString = new AppConfig().ConnectionString;
         }
 
         public IEnumerable<Vehicle> GetAll()

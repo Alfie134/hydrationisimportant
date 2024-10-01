@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Configuration", "..\Configu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1D35C5CD-9976-4C3E-916C-59EA15C7D0E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryTests", "..\RepositoryTests\RepositoryTests.csproj", "{DF3E9CD9-71E3-4FA8-B331-DFEC9AF52E56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryTests", "..\RepositoryTests\RepositoryTests.csproj", "{DF3E9CD9-71E3-4FA8-B331-DFEC9AF52E56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

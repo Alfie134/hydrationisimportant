@@ -7,13 +7,12 @@ namespace RepositoryTests
     [TestClass]
     public class RegionRepositoryTests
     {
-        public TestContext TestContext { get; set; }
         private IRegionRepository _regionRepository;
 
         [TestInitialize]
         public void InitializeTest()
         {
-            _regionRepository = new RegionRepository((string)TestContext.Properties["testdatabaseURL"]);
+            _regionRepository = new RegionRepository();
         }
 
 

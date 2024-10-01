@@ -8,9 +8,9 @@ namespace Repositories
     public class RegionRepository : IRegionRepository
     {
         private readonly string _connectionString;
-        public RegionRepository(string connectionString)
+        public RegionRepository()
         {
-            _connectionString = connectionString;
+            _connectionString = new AppConfig().ConnectionString;
         }
 
         public IEnumerable<Region> GetAll()

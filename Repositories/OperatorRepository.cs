@@ -1,6 +1,7 @@
 ﻿using Models;
 using Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
+using Configuration;
 
 namespace Repositories
 {
@@ -8,9 +9,9 @@ namespace Repositories
     {
         private readonly string _connectionString;
 
-        public OperatorRepository(string connectionString)
+        public OperatorRepository()
         {
-            _connectionString = connectionString;
+            _connectionString = new AppConfig().ConnectionString;
         }
 
         public IEnumerable<Operator> GetAll()
