@@ -31,5 +31,14 @@ namespace RepositoryTests
             Assert.IsNotNull(tempUser.Password);
             Assert.IsTrue(tempUser.UserName == "Bente");
         }
+
+        [TestMethod]
+        public void GetByUsername_ReturnsCorrectInfo()
+        {
+            User tempUser = _userRepository.GetByUserName("Bente");
+            Assert.IsNotNull(tempUser);
+            Assert.IsNotNull(tempUser.Password);
+            Assert.IsTrue(tempUser.Id == 1);
+        }
     }
 }
