@@ -7,8 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"  >
     <Grid>
-        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Width="40" Height="40" Click="ProfileButton_Click" Margin="0,25,170,0">
-            <Image Source="/Views/Images/ProfileButton.png"  Stretch="Uniform"/>
-        </Button>
+        <StackPanel Width="100" Height="150" VerticalAlignment="Top" Orientation="Vertical" Margin="0,25,100,0" HorizontalAlignment="Right">
+            <Button HorizontalAlignment="left" VerticalAlignment="Top" Width="40" Height="40" Click="ProfileButton_Click" Margin="0,0,0,5">
+                <Image Source="/Views/Images/ProfileButton.png"  Stretch="Uniform"/>
+            </Button>
+            <StackPanel Orientation="Vertical" Name="UserDropDown">
+               
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

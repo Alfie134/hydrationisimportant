@@ -1,65 +1,55 @@
-﻿using Models;
-using Repositories.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
-using Configuration;
+using Models;
+using Repositories.Interfaces;
 
 namespace Repositories
 {
     public class ServiceLevelRepository : IServiceLevelRepository
     {
-        private readonly string _connectionString;
-
         public ServiceLevelRepository()
         {
-            _connectionString = new AppConfig().ConnectionString;
         }
-
-        public IEnumerable<ServiceLevel> GetAll()
+        public IEnumerable<ServiceLevel> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var serviceLevels = new List<ServiceLevel>();
             string query = "SELECT * FROM ServiceLevel";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-                connection.Open();
+            SqlCommand command = new SqlCommand(query, connection, transaction);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        serviceLevels.Add(SerializeServiceLevel(reader));
-                    }
+                    serviceLevels.Add(new ServiceLevel((int)reader["Id"], (string)reader["Name"], TimeSpan.FromMinutes((int)reader["TimeSpan"])));
                 }
             }
             return serviceLevels;
-        }   
+        }
 
-        public ServiceLevel GetById(int id)
+        public ServiceLevel GetById(int id, SqlConnection connection, SqlTransaction? transaction = null)
         {
-            ServiceLevel serviceLevel = null;
+            ServiceLevel? serviceLevel = null;
             string query = "SELECT * FROM ServiceLevel WHERE Id = @Id";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection, transaction))
             {
-                SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Id", id);
-                connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        serviceLevel = SerializeServiceLevel(reader);
+                        serviceLevel = new ServiceLevel((int)reader["Id"], (string)reader["Name"], TimeSpan.FromMinutes((int)reader["TimeSpan"]));
                     }
                 }
             }
             return serviceLevel;
         }
 
-        private ServiceLevel SerializeServiceLevel(SqlDataReader reader)
-        {
-            return new ServiceLevel(reader.GetInt32(reader.GetOrdinal("Id")), reader.GetString(reader.GetOrdinal("Name")), reader.GetTimeSpan(reader.GetOrdinal("TimeSpan")));
-        }
     }
 }

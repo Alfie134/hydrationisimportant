@@ -1,7 +1,7 @@
-﻿using Models;
-using Repositories.Interfaces;
+﻿using Configuration;
 using Microsoft.Data.SqlClient;
-using Configuration;
+using Models;
+using Repositories.Interfaces;
 
 namespace Repositories
 {
@@ -9,49 +9,40 @@ namespace Repositories
     {
         private readonly string _connectionString;
 
-        public PostalRepository()
+        public PostalRepository(string connectionString)
         {
-            _connectionString = new AppConfig().ConnectionString;
+            _connectionString = connectionString;
         }
 
-        public IEnumerable<Postal> GetAll()
+        public IEnumerable<Postal> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var postals = new List<Postal>();
             string query = "SELECT * FROM PostalCode";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-                connection.Open();
+            SqlCommand command = new SqlCommand(query, connection,transaction);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        postals.Add(new Postal((int)reader["PostalCode"], (string)reader["City"]));
-                    }
+                    postals.Add(new Postal((int)reader["PostalCode"], (string)reader["City"]));
                 }
             }
+        
             return postals;
         }
-
-        public Postal GetById(int id)
+        public Postal GetById(int id, SqlConnection connection, SqlTransaction? transaction = null)
         {
-            Postal postal = null;
+            Postal? postal = null;
             string query = "SELECT * FROM PostalCode WHERE PostalCode = @PostalCode";
-            
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@PostalCode", id);
-                connection.Open();
+            SqlCommand command = new SqlCommand(query, connection,transaction);
+            command.Parameters.AddWithValue("@PostalCode", id);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                if (reader.Read())
                 {
-                    if (reader.Read())
-                    {
-                        postal = new Postal((int)reader["PostalCode"], (string)reader["City"]);
-                    }
+                    postal = new Postal((int)reader["PostalCode"], (string)reader["City"]);
                 }
             }
             return postal;

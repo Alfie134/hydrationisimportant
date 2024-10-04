@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories.Interfaces
+namespace Repositories.Interfaces.Base
 {
     public interface ICreateRepository<in T>
     {
-        int Add(T entity);
+        int Add(T entity, SqlConnection connection, SqlTransaction? transaction = null);
     }
 }

@@ -8,16 +8,20 @@ namespace Models
 {
     public class Route
     {
-        public int RouteId { get; set; }       // Unik identifikator for ruten
+        public int Id { get; set; }       // Unik identifikator for ruten
         public int VehicleId { get; set; }     // Identifikator for køretøjet, der bruges på ruten
         public List<Mission> Tasks { get; set; }  // Liste over opgaver knyttet til ruten
 
         // Konstruktor til at initialisere ruten
         public Route(int routeId, int vehicleId)
         {
-            RouteId = routeId;
+            Id = routeId;
             VehicleId = vehicleId;
-            Tasks = new List<Mission>(); // Initialiser en tom liste af opgaver
+        }
+
+        public Route( int vehicleId)
+        {
+            VehicleId = vehicleId;
         }
     }
 }

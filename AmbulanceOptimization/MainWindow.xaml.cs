@@ -8,52 +8,36 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Security.Cryptography; //  Bruges til hashing 
+using System.Security.Cryptography;
+using AmbulanceOptimization.ViewModels; //  Bruges til hashing 
 using AmbulanceOptimization.Views;
 
 namespace AmbulanceOptimization
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+   
     public partial class MainWindow : Window
     {
+        LoginViewModel loginViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            loginViewModel = new LoginViewModel();
+            DataContext = loginViewModel;
         }
 
-        private void Login_Button_Click(object sender, RoutedEventArgs e)
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            // Burde jo lige tjekke om det er korrekte oplysninger, men nu gør vi lige sådan midlertidigt
-            MenuWindow menuWindow = new MenuWindow();
-
-            // Viser det nye vindue
-            menuWindow.Show();
-
-            // Lukker det nuværende vindue (Login-vinduet)
-            Window currentWindow = Window.GetWindow(this);
-            if (currentWindow != null)
+            var passwordBox = sender as PasswordBox;
+            if (passwordBox != null)
             {
-                currentWindow.Close(); // Brug Close i stedet for Hide, da vi lukker vinduet
+                var viewModel = this.DataContext as LoginViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.Password = passwordBox.SecurePassword; // Sætter SecurePassword i ViewModel
+                    
+                }
             }
-        }
-    
-
-        private void BrugerIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e) //   Der findes en Password Box, som maskerer input
-        {
-           throw new NotImplementedException("??");
-        }
-
-        private void PasswordBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

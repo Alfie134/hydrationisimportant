@@ -14,37 +14,31 @@ namespace Repositories
             _connectionString = new AppConfig().ConnectionString;
         }
 
-        public IEnumerable<Operator> GetAll()
+        public IEnumerable<Operator> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var operators = new List<Operator>();
             string query = "SELECT * FROM Operator";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-                connection.Open();
+            SqlCommand command = new SqlCommand(query, connection);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        operators.Add(new Operator((int)reader["OperatorId"], (string)reader["Name"]));
-                    }
+                    operators.Add(new Operator((int)reader["OperatorId"], (string)reader["Name"]));
                 }
             }
+
             return operators;
         }
 
-        public Operator GetById(int id)
+        public Operator GetById(int id, SqlConnection connection, SqlTransaction? transaction = null)
         {
             Operator operatorr = null;
             string query = "SELECT * FROM Operator WHERE OperatorId = @OperatorId";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString)) 
-            {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@OperatorId", id);
-                connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -53,7 +47,6 @@ namespace Repositories
                         operatorr = new Operator((int)reader["OperatorId"], (string)reader["Name"]); 
                     }
                 }
-            }
             return operatorr;
         }
     }

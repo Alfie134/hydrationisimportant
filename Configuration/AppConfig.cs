@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Configuration
 {
@@ -8,15 +9,28 @@ namespace Configuration
 
         public AppConfig()
         {
-            // Initialize configuration
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())  // You may need to adjust this path
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             _configuration = builder.Build();
         }
+        public string ConnectionString {
 
-        // Expose Connection String
-        public string ConnectionString => _configuration.GetConnectionString("DefaultConnection");
+            get
+            {
+                var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+                if (environment == "Test")
+                {
+                    return _configuration.GetConnectionString("TestConnection");
+                }
+                else
+                {
+                    return _configuration.GetConnectionString("DefaultConnection");
+                }
+            }
+        } 
+        public string PasswordPepper => _configuration["AppSettings:PasswordPepper"];
     }
 }

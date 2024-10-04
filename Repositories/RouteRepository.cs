@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Models;
 using Repositories.Interfaces;
+using System.Data;
 
 namespace Repositories
 {
@@ -9,39 +10,54 @@ namespace Repositories
     {
         private readonly string _connectionString;
 
-        public RouteRepository()
+        public RouteRepository(string connectionString)
         {
-            _connectionString = new AppConfig().ConnectionString;
+            _connectionString = connectionString;
         }
 
-        public IEnumerable<Route> GetAll()
+        public int Add(Route entity, SqlConnection connection, SqlTransaction? transaction = null)
+        {
+            var command =
+                new SqlCommand(
+                    @$"INSERT INTO Route (VehicleId) VALUES (@VehicleId); SELECT SCOPE_IDENTITY();", connection,
+                    transaction);
+
+            int id = 0;
+            using (command)
+            {
+                command.Parameters.AddWithValue("@VehicleId", entity.VehicleId);
+                id = Convert.ToInt32(command.ExecuteScalar());
+            }
+
+            return id;
+        }
+
+        public IEnumerable<Route> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var routes = new List<Route>();
             string query = "SELECT * FROM Route";
 
-            using(SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-                connection.Open();
+            SqlCommand command = new SqlCommand(query, connection, transaction);
+            connection.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        routes.Add(new Route((int)reader["Id"], (int)reader["VehicleId"]));
-                    }
+                    routes.Add(new Route((int)reader["Id"], (int)reader["VehicleId"]));
                 }
             }
+
             return routes;
         }
 
-        public Route GetById(int id)
+        public Route? GetById(int id, SqlConnection connection, SqlTransaction? transaction = null)
         {
-            Route route = null;
+            Route? route = null;
             string query = "SELECT * FROM Route WHERE Id = @Id";
-            using(SqlConnection connection = new SqlConnection(_connectionString))
+
+            using (SqlCommand command = new SqlCommand(query, connection, transaction))
             {
-                SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Id", id);
                 connection.Open();
 
@@ -53,7 +69,21 @@ namespace Repositories
                     }
                 }
             }
+
             return route;
         }
+
+        public void Update(Route entity, SqlConnection connection, SqlTransaction? transaction = null)
+        {
+            string query = "UPDATE Route SET VehicleId = @VehicleId WHERE Id = @Id";
+
+            SqlCommand command = new SqlCommand(query, connection, transaction);
+            using (command)
+            {
+                command.Parameters.AddWithValue("@VehicleId", entity.VehicleId);
+                command.ExecuteNonQuery();
+            }
+        }
     }
+
 }
