@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Configuration;
@@ -41,6 +42,29 @@ namespace Services
                     }
                 }
             }
+        }
+
+        public List<Mission> GetAll()
+        {
+            List<Mission> tempMissions = new List<Mission>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        tempMissions = (List<Mission>)_missionRepository.GetAll( connection, transaction);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+            return tempMissions;
         }
     }
 }

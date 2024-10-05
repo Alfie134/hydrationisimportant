@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using AmbulanceOptimization.ViewModels;
 using Models;
 
 namespace AmbulanceOptimization.Views
@@ -8,29 +9,14 @@ namespace AmbulanceOptimization.Views
     /// </summary>
     public partial class TaskBank : Window
     {
+        TaskBankViewModel viewModel;
+
         public TaskBank()
         {
             InitializeComponent();
+            viewModel = new TaskBankViewModel();
+            DataContext = viewModel;
 
-            // Eksempel på en liste af Mission objekter, hentet fra din Mission klasse i Models
-            var tasks = new List<Mission>
-{
-    new Mission(1, 1, "3456", TaskType.C, "Patient fra Rigshospitalet til Esbjerg",
-             new ServiceLevel(1, "Haster", TimeSpan.FromHours(2)), DateTime.Now, 180,
-             DateTime.Now.AddHours(2), "Sted: Dronningensgade 15, Esbjerg",
-             new Postal(6700, "Esbjerg"), "Sted: Dr. Nielsensgade 34, Odense",
-             new Postal(5000, "Odense"), "Eva Jensen"),
-
-    new Mission(2, 1, "4567", TaskType.D, "Patient fra Rigshospitalet til Aalborg",
-             new ServiceLevel(2, "Standard", TimeSpan.FromHours(1.5)), DateTime.Now, 90,
-             DateTime.Now.AddHours(1.5), "Sted: Ågade 1, Aalborg",
-             new Postal(9000, "Aalborg"), "Sted: Strandvejen 10, Esbjerg",
-             new Postal(6700, "Esbjerg"), "Jonas Larsen")
-};
-
-
-            // Bind data til DataGrid
-            TaskDataGrid.ItemsSource = tasks;
         }
 
         private void AssignVehicle_Click(object sender, RoutedEventArgs e)
