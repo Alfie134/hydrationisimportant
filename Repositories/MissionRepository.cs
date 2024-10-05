@@ -50,16 +50,7 @@ namespace Repositories
         public IEnumerable<Mission> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
-            string query = @"SELECT Mission.RegionalTaskId, Mission.Type, ServiceLevel.Name, 
-                             Mission.ExpectedDeparture, Mission.DurationInMin, Mission.ExpectedArrival, 
-                            FromPostal.PostalNumber, Mission.FromAddress, 
-                            ToPostal.PostalNumber, Mission.ToAddress, 
-                            Mission.PatientName, Mission.Description
-
-                            FROM Mission
-                            JOIN PostalCode AS FromPostal ON Mission.FromPostalCode = FromPostal.PostalCode
-                            JOIN PostalCode AS ToPostal ON Mission.ToPostalCode = ToPostal.PostalCode
-                            JOIN ServiceLevel ON Mission.ServiceLevelId = ServiceLevel.Id;";
+            string query = "SELECT * FROM Mission"; 
             using (SqlCommand command = new SqlCommand(query, connection, transaction))
             {
                 using (SqlDataReader reader = command.ExecuteReader())
