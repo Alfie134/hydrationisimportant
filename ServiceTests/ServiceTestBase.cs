@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Configuration;
 
-namespace RepositoryTests
+namespace ServiceTests
 {
-    public class RepositoryTestBase
+    public abstract class ServiceTestBase
     {
         protected string ConnectionString;
 
-        protected RepositoryTestBase()
+        protected ServiceTestBase()
         {
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Test");
             ConnectionString = new AppConfig().ConnectionString;

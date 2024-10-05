@@ -43,7 +43,7 @@ namespace RepositoryTests
 
             Assert.IsNotNull(tempUser);
             Assert.IsNotNull(tempUser.PasswordHash);
-            Assert.IsTrue(tempUser.UserName == "Bente");
+            Assert.IsTrue(tempUser.UserName == "TestBrugerById");
         }
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace RepositoryTests
             using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                tempUser = _userRepository.GetByUsername("Bente", connection);
+                tempUser = _userRepository.GetByUsername("TestBrugerById", connection);
             }
 
             Assert.IsNotNull(tempUser);

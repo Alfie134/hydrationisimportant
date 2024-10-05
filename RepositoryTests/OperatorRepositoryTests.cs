@@ -51,7 +51,7 @@ namespace RepositoryTests
             }
 
             Assert.IsNotNull(tempOperator);
-            Assert.IsTrue(tempOperator.Name == "Bent");
+            Assert.IsTrue(tempOperator.Name == "Region Hovedstaden");
         }
     }
 }
