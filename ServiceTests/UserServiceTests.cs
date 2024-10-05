@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 namespace ServiceTests
 {
     [TestClass]
-    public class UserServiceTests
+    public class UserServiceTests: ServiceTestBase
     {
+//        [TestMethod]
+
 
     }
 }

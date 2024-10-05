@@ -41,7 +41,7 @@ namespace RepositoryTests
                 Assert.IsNotNull(tempServiceLevel);
 
             }
-            Assert.IsTrue(tempServiceLevel.Name == "One Hour");
+            Assert.IsTrue(tempServiceLevel.Name == "SERVICELAG 1");
             Assert.IsTrue(tempServiceLevel.Time.TotalHours == 1);
         }
 

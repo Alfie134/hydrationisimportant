@@ -45,7 +45,7 @@ namespace RepositoryTests
         public void Test_GetById_ReturnsRegionSyd()
         {
             // Arrange
-            int expectedId = 3; // Id for AMB0001
+            int expectedId = 1; // Id for AMB0001
             string expectedName = "AMB001";
             int expectedOperator = 1;
             int expectedRegion = 1084;

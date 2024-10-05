@@ -13,9 +13,9 @@ namespace Services
     public class UserService
     {
         public string SecretPepper;
-        private IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly string _connectionString;
-        private AppConfig _appConfig;
+        private readonly AppConfig _appConfig;
 
         public UserService()
         {
@@ -29,10 +29,10 @@ namespace Services
         public User UserLogin(string username, string password)
         {
             User user = GetUserByUsername(username);
-            byte[] Salt = Convert.FromBase64String(user.PasswordSalt);
-            string HashedPassword = HashPasswordWithSaltAndPepper(password, Salt );
+            byte[] salt = Convert.FromBase64String(user.PasswordSalt);
+            string hashedPassword = HashPasswordWithSaltAndPepper(password, salt );
 
-            if (HashedPassword == user.PasswordHash)
+            if (hashedPassword == user.PasswordHash)
             {
                 return user;
             }
@@ -65,9 +65,9 @@ namespace Services
 
         public ServiceResult<User> CreateUser(string username, string password,int region)
         {
-            byte[] Salt = GenerateSalt();
-            string SaltAsString = Convert.ToBase64String(Salt);
-            string passwordHash = HashPasswordWithSaltAndPepper(password,Salt);
+            byte[] salt = GenerateSalt();
+            string saltAsString = Convert.ToBase64String(salt);
+            string passwordHash = HashPasswordWithSaltAndPepper(password,salt);
 
                 
                 using (var connection = new SqlConnection(_connectionString))
@@ -75,7 +75,7 @@ namespace Services
                     try
                     {
                         connection.Open();
-                        User user = new User(username, passwordHash, region, SaltAsString);
+                        User user = new User(username, passwordHash, region, saltAsString);
                         int id = _userRepository.Add(user, connection);
                         user = _userRepository.GetById(id, connection);
                         return ServiceResult<User>.Success(user);
