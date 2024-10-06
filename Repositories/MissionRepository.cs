@@ -69,6 +69,7 @@ namespace Repositories
             return missions;
         }
 
+
         public IEnumerable<Mission> GetMissionsByRouteId(int id,SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
@@ -90,6 +91,31 @@ namespace Repositories
                 }
             }
 
+            return missions;
+        }
+
+        public IEnumerable<Mission> GetFilteredMissions(DateTime? selectedDate, bool showAllMissions, SqlConnection connection, SqlTransaction? transaction = null)
+        {
+            List<Mission> missions = new List<Mission>();
+            string query = @" SELECT * FROM Mission
+                    WHERE (@SelectedDate IS NULL OR CONVERT(date, ExpectedDeparture) = CONVERT(date, @SelectedDate))
+                    AND (@ShowAllMissions = 1 OR RouteId IS NULL)";
+
+
+            using (SqlCommand command = new SqlCommand(query, connection, transaction))
+            {
+                command.Parameters.AddWithValue("@SelectedDate", (object)selectedDate ?? DBNull.Value);
+                command.Parameters.AddWithValue("@ShowAllMissions", showAllMissions ? 1 : 0);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Mission mission = SerializeMission(reader);
+                        missions.Add(mission);
+                    }
+                }
+            }
             return missions;
         }
 

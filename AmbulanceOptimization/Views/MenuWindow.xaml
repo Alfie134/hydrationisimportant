@@ -24,7 +24,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1">
             <Button Content="Opgavebanken" HorizontalAlignment="Center" Margin="5" VerticalAlignment="Top" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold" Click="Open_TaskBank"/>
-            <Button Content="Ruter" HorizontalAlignment="Center"  VerticalAlignment="Top" Margin="5" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold" Click="Open_TaskBank"/>
+            <Button Content="Ruter" HorizontalAlignment="Center"  VerticalAlignment="Top" Margin="5" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold" Click="Open_Routes"/>
             <Button Content="Under udførelse" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold"/>
             <Button Content="Slet opgave" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Height="54" Width="124" Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold"/>
         </StackPanel>

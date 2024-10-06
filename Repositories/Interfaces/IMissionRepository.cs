@@ -12,5 +12,6 @@ namespace Repositories.Interfaces
     public interface IMissionRepository: ICreateRepository<Mission>, IReadRepository<Mission>, IUpdateRepository<Mission>, IDeleteRepository<Mission>
     {
         IEnumerable<Mission> GetMissionsByRouteId( int routeid, SqlConnection connection, SqlTransaction? transaction = null);
+        IEnumerable<Mission> GetFilteredMissions(DateTime? selectedDate, bool showAllMissions , SqlConnection connection, SqlTransaction? transaction = null);
     }
 }

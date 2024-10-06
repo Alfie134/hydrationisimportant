@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using AmbulanceOptimization.ViewModels;
 using Models;
 
@@ -14,6 +15,8 @@ namespace AmbulanceOptimization.Views
         public TaskBank()
         {
             InitializeComponent();
+            Datepicker.SelectedDate = DateTime.Now;
+
             viewModel = new TaskBankViewModel();
             DataContext = viewModel;
 

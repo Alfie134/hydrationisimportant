@@ -13,8 +13,12 @@
         <userControls:RegionSouthLogo/>
         <!-- Profil button control -->
         <userControls:UserProfileControl/>
+
         <!-- Task bank header -->
         <TextBlock x:Name="TaskBankHeader" Text="OPGAVEBANK" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0"/>
+
+        <DatePicker x:Name="Datepicker" SelectedDate="{Binding SelectedDate, Mode=TwoWay}" HorizontalAlignment="Left" Margin="252,113,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Vis tildelte opgaver" IsChecked="{Binding ShowAllMissions, Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top"/>
 
         <!-- DataGrid til opgaver -->
         <DataGrid x:Name="TaskDataGrid"  ItemsSource="{Binding Missions}" AutoGenerateColumns="False" 
@@ -30,7 +34,7 @@
 
                 <!-- Servicemål -->
                 <DataGridTextColumn Header="Servicemål" Binding="{Binding ServiceLevel.Name}" Width="70"/>
-              
+
                 <!-- Forventet Afrejse -->
                 <DataGridTextColumn Header="Forventet Afrejse" Binding="{Binding ExpectedDeparture}" Width="150"/>
 
@@ -58,10 +62,9 @@
 
             </DataGrid.Columns>
         </DataGrid>
-
-        <!-- Annuller knap -->
-        <Button x:Name="CancelButton" Content="Annuller" Width="80" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,20"/>
+      
         <!-- Back to menu knap -->
         <userControls:BackToMenu/>
+    
     </Grid>
 </Window>
