@@ -12,15 +12,15 @@ namespace AmbulanceOptimization.ViewModels
 {
     internal class CreateUserViewModel
     {
-        public string UserName { get; set; } 
-        public string Password { get; set; }
+        public string UserName { get; set; } = "";
+        public string Password { get; set; } = "";
         public List<Region> Regions { get; set; }
         public Region SelectedRegion { get; set; }
 
         private RegionController _regionController;
         private UserController _userController;
 
-        public ICommand CreateUserCommand { get; set; } = new CreateUserCommand();
+        public ICommand CreateUserCommand { get; set; }
 
         public CreateUserViewModel()
         {
@@ -28,7 +28,8 @@ namespace AmbulanceOptimization.ViewModels
             _regionController = new RegionController();
             _userController = new UserController();
             LoadRegions();
-
+            
+            CreateUserCommand   = new CreateUserCommand(this);
         }
 
         private void LoadRegions()
@@ -41,13 +42,13 @@ namespace AmbulanceOptimization.ViewModels
             _userController.Add(UserName,Password,SelectedRegion.RegionId);
         }
 
-        public bool CheckIfUserNameIsTaken()
+        public bool IsUsernameAvailable()
         {
             if (_userController.GetUserByUserName(UserName)==null)
             {
-                return false;
+                return true; //Brugeren blev ikke fundet. brugernavn er ledigt
             }
-            return true;
+            return false; //brugernavn er optaget.
         }
     }
 }

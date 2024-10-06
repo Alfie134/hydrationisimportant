@@ -21,16 +21,22 @@
         <Label Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Center">BrugerOprettelse</Label>
 
         <StackPanel Grid.Column="1" Grid.Row="1">
+
             <!--username-->
-            <StackPanel Orientation="Horizontal">
-                <Label>Brugernavn</Label>
-                <TextBox Width="150" Text="{Binding UserName}" LostFocus="LostFokusUsernameFocus"></TextBox>
+            <StackPanel Name="UserNameVerticalStackPanel">
+                <StackPanel Orientation="Horizontal">
+                    <Label>Brugernavn</Label>
+                    <TextBox Width="150" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" LostFocus="LostFokusUsernameFocus"></TextBox>
+                </StackPanel>
+                <Label x:Name="UserNameErrors" Foreground="Red"></Label>
             </StackPanel>
 
             <!--Password-->
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Name="PasswordVerticalStackPanel">
+                <StackPanel Orientation="Horizontal">
                 <Label>adgangskode</Label>
                 <TextBox Width="150" Text="{Binding Password}"></TextBox>
+                </StackPanel>
             </StackPanel>
 
             <!--Region-->
