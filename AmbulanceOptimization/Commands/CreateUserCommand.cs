@@ -20,7 +20,7 @@ namespace AmbulanceOptimization.Commands
         }
         public bool CanExecute(object? parameter)
         {
-            if (_viewModel.UserName.Length <=5) return false;
+            if (_viewModel.Username.Length <=5) return false;
             if (_viewModel.Password.Length <= 3) return false;
             else if (_viewModel.IsUsernameAvailable()==false) return false;
             return true;

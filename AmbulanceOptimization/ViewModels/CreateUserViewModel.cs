@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,10 +12,36 @@ using Models;
 
 namespace AmbulanceOptimization.ViewModels
 {
-    internal class CreateUserViewModel
+    internal class CreateUserViewModel: INotifyPropertyChanged
     {
-        public string UserName { get; set; } = "";
-        public string Password { get; set; } = "";
+        private string _username = "";
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                if (_username != value)
+                {
+                    _username = value;
+                    OnPropertyChanged(nameof(Username));
+                    ((CreateUserCommand)CreateUserCommand).RaiseCanExecuteChanged(); // Opdater CanExecute, når brugernavnet ændres
+                }
+            }
+        }
+        private string _password = "";
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                if (_password != value)
+                {
+                    _password = value;
+                    OnPropertyChanged(nameof(Password));
+                    ((CreateUserCommand)CreateUserCommand).RaiseCanExecuteChanged(); // Opdater CanExecute, når adgangskoden ændres
+                }
+            }
+        }
         public List<Region> Regions { get; set; }
         public Region SelectedRegion { get; set; }
 
@@ -39,16 +67,23 @@ namespace AmbulanceOptimization.ViewModels
 
         internal void CreatUser()
         {
-            _userController.Add(UserName,Password,SelectedRegion.RegionId);
+            _userController.Add(Username,Password,SelectedRegion.RegionId);
         }
 
         public bool IsUsernameAvailable()
         {
-            if (_userController.GetUserByUserName(UserName)==null)
+            if (_userController.GetUserByUserName(Username)==null)
             {
                 return true; //Brugeren blev ikke fundet. brugernavn er ledigt
             }
             return false; //brugernavn er optaget.
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
