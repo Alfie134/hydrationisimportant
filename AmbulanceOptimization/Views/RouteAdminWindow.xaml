@@ -11,39 +11,42 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height ="50"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+        
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
 
-                    <StackPanel Width="250">
-                        <Label FontWeight="Bold">Ruter</Label>
-                        <ListBox Height="50" Width="250" Margin="5"></ListBox>
-                    </StackPanel>
+                <StackPanel Width="250">
+                    <Label FontWeight="Bold">Ruter</Label>
+                <ListBox Width="250" Margin="5"  ItemsSource="{Binding Routes}" SelectedItem="{Binding SelectedRoute}"
+                         DisplayMemberPath="Id"></ListBox>
+                </StackPanel>
 
-                    <StackPanel Width="250" >
-                        <Label FontWeight="Bold">Allerede tilføjede opgaver</Label>
-                        <ListBox Height="50" Margin="5"></ListBox>
-                    </StackPanel>
+                <StackPanel Width="250" >
+                    <Label FontWeight="Bold">Allerede tilføjede opgaver</Label>
+                    <ListBox Height="50" Margin="5"></ListBox>
+                </StackPanel>
 
-                    <StackPanel Width="250" Margin="5">
+                <StackPanel Width="250" Margin="5">
                     <Label FontWeight="Bold">Foreslag</Label>
-                        <Label>Postnummer</Label>
-                        <ListBox Height="20"></ListBox>
-                        <Label>Kommune</Label>
-                        <ListBox Height="20"></ListBox>
-                        <Label>Region</Label>
-                        <ListBox Height="20"></ListBox>
-                    </StackPanel>
+                    <Label>Postnummer</Label>
+                    <ListBox Height="20"></ListBox>
+                    <Label>Kommune</Label>
+                    <ListBox Height="20"></ListBox>
+                    <Label>Region</Label>
+                    <ListBox Height="20"></ListBox>
+                </StackPanel>
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Button> Opret rute</Button>
-                    <Button>Slet rute</Button>
-                    <Button>Tildel køretøj</Button>
-            </StackPanel>
-            <userControls:BackToMenu HorizontalAlignment="Right"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Margin ="5"> Opret rute</Button>
+            <Button Margin ="5">Slet rute</Button>
+            <Button Margin ="5">Tildel køretøj</Button>
         </StackPanel>
+        
+        <userControls:BackToMenu HorizontalAlignment="Right" Grid.Row ="2"/>
+    
     </Grid>
 </Window>

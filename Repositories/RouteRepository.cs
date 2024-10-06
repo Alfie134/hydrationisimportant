@@ -38,8 +38,7 @@ namespace Repositories
             string query = "SELECT * FROM Route";
 
             SqlCommand command = new SqlCommand(query, connection, transaction);
-            connection.Open();
-
+           
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())

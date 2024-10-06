@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AmbulanceOptimization.ViewModels;
 
 namespace AmbulanceOptimization.Views
 {
@@ -19,9 +20,12 @@ namespace AmbulanceOptimization.Views
     /// </summary>
     public partial class RouteAdminWindow : Window
     {
+        private RouteAdminViewModel RAVM;
         public RouteAdminWindow()
         {
             InitializeComponent();
+            RAVM = new RouteAdminViewModel();
+            DataContext = RAVM;
         }
     }
 }
