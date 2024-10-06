@@ -35,10 +35,10 @@ namespace AmbulanceOptimization.Views
         private void LostFokusUsernameFocus(object sender, RoutedEventArgs e)
         {
 
-            if (CUVM.Username.Length <= 5)
+            if (CUVM.Username.Length < 5)
             {
                 UserNameErrors.Visibility = Visibility.Visible;
-                UserNameErrors.Content = "Brugernavn er for kort"; //Fortæl bruger brugernavn er for kort
+                UserNameErrors.Content = "Brugernavn er for kort, mindst 5 tegn"; //Fortæl bruger brugernavn er for kort
             }
             else if (CUVM.IsUsernameAvailable() == false)
             {
@@ -52,10 +52,10 @@ namespace AmbulanceOptimization.Views
 
         private void LostFokusPasswordFocus(object sender, RoutedEventArgs e)
         {
-            if (CUVM.Password.Length <= 3)
+            if (CUVM.Password.Length < 3)
             {
                 PasswordErrors.Visibility = Visibility.Visible;
-                PasswordErrors.Content = "adgangskode er for kort";
+                PasswordErrors.Content = "adgangskode er for kort, mindst 3 tegn";
             }
             else PasswordErrors.Visibility = Visibility.Collapsed;
             ((CreateUserCommand)CUVM.CreateUserCommand).RaiseCanExecuteChanged();
