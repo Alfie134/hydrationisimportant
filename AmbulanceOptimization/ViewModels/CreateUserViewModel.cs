@@ -40,5 +40,14 @@ namespace AmbulanceOptimization.ViewModels
         {
             _userController.Add(UserName,Password,SelectedRegion.RegionId);
         }
+
+        public bool CheckIfUserNameIsTaken()
+        {
+            if (_userController.GetUserByUserName(UserName)==null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

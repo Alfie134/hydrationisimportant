@@ -39,9 +39,9 @@ namespace Services
             return null;
         }
 
-        public User GetUserByUsername(string username)
+        public User? GetUserByUsername(string username)
         {
-            User user;
+            User? user = null;
             using (var connection = new SqlConnection(_appConfig.ConnectionString))
             {
                 connection.Open();

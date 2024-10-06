@@ -21,11 +21,17 @@ namespace AmbulanceOptimization.Views
     public partial class CreateUserWindow : Window
     {
         private CreateUserViewModel CUVM;
+
         public CreateUserWindow()
         {
             InitializeComponent();
             CUVM = new CreateUserViewModel();
             DataContext = CUVM;
+        }
+
+        private void LostFokusUsernameFocus(object sender, RoutedEventArgs e)
+        {
+            CUVM.CheckIfUserNameIsTaken();
         }
     }
 }

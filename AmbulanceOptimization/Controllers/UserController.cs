@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models;
 using Services;
 
 namespace AmbulanceOptimization.Controllers
@@ -18,6 +19,11 @@ namespace AmbulanceOptimization.Controllers
         public void Add(string username,string password,int region)
         {
             _userService.CreateUser(username, password, region);
+        }
+
+        public User? GetUserByUserName(string username)
+        {
+            return _userService.GetUserByUsername(username);
         }
     }
 }

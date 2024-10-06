@@ -24,7 +24,7 @@
             <!--username-->
             <StackPanel Orientation="Horizontal">
                 <Label>Brugernavn</Label>
-                <TextBox Width="150" Text="{Binding UserName}"></TextBox>
+                <TextBox Width="150" Text="{Binding UserName}" LostFocus="LostFokusUsernameFocus"></TextBox>
             </StackPanel>
 
             <!--Password-->
