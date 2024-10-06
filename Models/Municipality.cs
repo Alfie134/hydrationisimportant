@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace Models
+﻿namespace Models
 {
     public class Municipality
     {
@@ -21,8 +14,5 @@ namespace Models
             Name = name;
             RegionId = regionId;
         }
-
-
     }
-
 }

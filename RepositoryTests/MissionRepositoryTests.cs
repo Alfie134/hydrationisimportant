@@ -1,11 +1,9 @@
-using Configuration;
 using Microsoft.Data.SqlClient;
 using Models;
 using Repositories;
 using Repositories.Interfaces;
-using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Bogus;
+using System.Security.Cryptography.X509Certificates;
 
 namespace RepositoryTests
 {
@@ -283,6 +281,158 @@ namespace RepositoryTests
                 var deletedMission = _missionRepository.GetById(id, connection);
 
                 Assert.IsNull(deletedMission, "The mission should be deleted and thus be null.");
+            }
+        }
+        [TestMethod]
+        public void CreateRandomMissions()
+        {
+            IRegionRepository regionRepository = new RegionRepository(_connectionString);
+            IMunicipalityRepository municipalityRepository = new MunicipalityRepository(_connectionString);
+            IVehicleRepository vehicleRepository = new VehicleRepository();
+            IServiceLevelRepository serviceLevelRepository = new ServiceLevelRepository();
+            IPostalRepository postalRepository = new PostalRepository(_connectionString);
+
+            List<Mission> missionsList = new List<Mission>();
+
+            List<Municipality> municipalityList = null;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        municipalityList = municipalityRepository.GetAll(connection, transaction).ToList();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+
+            List<Vehicle> vehiclesList = null;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        vehiclesList = vehicleRepository.GetAll(connection, transaction).ToList();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+
+            List<ServiceLevel> serviceLevelList = null;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        serviceLevelList = serviceLevelRepository.GetAll(connection, transaction).ToList();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+
+            List<Region> regionsList = null;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        regionsList = regionRepository.GetAll(connection, transaction).ToList();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+
+            List<Postal> ppostalsList = null;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        ppostalsList = postalRepository.GetAll(connection, transaction).ToList();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+
+            var testmission = new Faker<Mission>()
+                .RuleFor(o => o.RegionId, f => f.PickRandom(regionsList.Select(x => x.RegionId)))
+                .RuleFor(o => o.RegionalTaskId, f => f.Internet.Mac())
+                .RuleFor(o => o.Type, f => TaskType.D)
+                .RuleFor(o => o.Description, f => f.Lorem.Lines(2))
+                .RuleFor(o => o.ServiceLevelId, f => f.PickRandom(serviceLevelList.Select(x => x.Id)))
+                .RuleFor(o => o.ExpectedDeparture, f => DateTime.Now)
+                .RuleFor(o => o.DurationInMin, f => f.Random.Number(60, 240))
+                .RuleFor(o => o.ExpectedArrival, f => DateTime.Now.AddMinutes(f.Random.Number(60, 240)))
+                .RuleFor(o => o.AssignedVehicle, f => f.PickRandom(vehiclesList))
+                .RuleFor(O => O.FromAddress, f => $"{f.Address.City()} {f.Address.StreetName()} {f.Address.SecondaryAddress()}")
+                .RuleFor(o => o.FromPostalCode, f => f.PickRandom(ppostalsList.Select(p => p.PostalNumber)))
+                .RuleFor(o => o.ToAddress, f => $"{f.Address.City()} {f.Address.StreetName()} {f.Address.SecondaryAddress()}")
+                .RuleFor(o => o.ToPostalCode, f => f.PickRandom(ppostalsList.Select(p => p.PostalNumber)))
+                .RuleFor(o => o.PatientName, f => $"{f.Name.LastName()} {f.Name.FirstName()}")
+                .RuleFor(o => o.RouteId, f => f.Random.Number(1, 21))
+                .RuleFor(o => o.UserId, f => f.Random.Number(1, 21));
+
+            missionsList = testmission.Generate(10).ToList();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (Mission mission in missionsList)
+                        {
+
+                            _missionRepository.Add(mission, connection, transaction);
+                        }
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
             }
         }
     }
