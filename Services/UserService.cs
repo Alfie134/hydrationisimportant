@@ -7,6 +7,7 @@ using Microsoft.Data.SqlClient;
 using Models;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Services
 {
@@ -29,8 +30,7 @@ namespace Services
         public User UserLogin(string username, string password)
         {
             User user = GetUserByUsername(username);
-            byte[] salt = Convert.FromBase64String(user.PasswordSalt);
-            string hashedPassword = HashPasswordWithSaltAndPepper(password, salt );
+            string hashedPassword = HashPasswordWithSaltAndPepper(password, user.PasswordSalt );
 
             if (hashedPassword == user.PasswordHash)
             {
@@ -38,6 +38,7 @@ namespace Services
             }
             return null;
         }
+
 
         public User GetUserByUsername(string username)
         {
@@ -65,31 +66,39 @@ namespace Services
 
         public ServiceResult<User> CreateUser(string username, string password,int region)
         {
-            byte[] salt = GenerateSalt();
-            string saltAsString = Convert.ToBase64String(salt);
+            string salt = GenerateSalt();
             string passwordHash = HashPasswordWithSaltAndPepper(password,salt);
 
                 
-                using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
                 {
                     try
                     {
-                        connection.Open();
-                        User user = new User(username, passwordHash, region, saltAsString);
-                        int id = _userRepository.Add(user, connection);
-                        user = _userRepository.GetById(id, connection);
+                        User? existingUser = _userRepository.GetByUsername(username, connection, transaction);
+                        if (existingUser != null)
+                        {
+                            throw new Exception($"User with username: {username} already exists");
+                        }
+                        User user = new User(username, passwordHash, region, salt);
+                        int id = _userRepository.Add(user, connection, transaction);
+                        user = _userRepository.GetById(id, connection, transaction);
+                        transaction.Commit();
                         return ServiceResult<User>.Success(user);
                     }
                     catch (Exception e)
                     {
-
+                        transaction.Rollback();
                         return ServiceResult<User>.Failure(e.Message, 0);
                     }
-                }
 
+                }
+            }
         }
 
-            public static byte[] GenerateSalt(int size = 16)
+            public static string GenerateSalt(int size = 16)
             {
                 byte[] salt = new byte[size];
                 using (var rng = RandomNumberGenerator.Create())
@@ -97,18 +106,29 @@ namespace Services
                     rng.GetBytes(salt);
                 }
 
-                return salt;
+                return Convert.ToBase64String(salt);
             }
 
-            public string HashPasswordWithSaltAndPepper(string password, byte[] salt)
+
+            public  string HashPasswordWithSaltAndPepper(string password, string salt)
             {
-                string passwordWithPepper = password + SecretPepper;
-                using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(passwordWithPepper, salt, 10000))
+                string saltedAndPepperedPassword = password + salt + SecretPepper;
+
+                
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(saltedAndPepperedPassword);
+
+                using (SHA256 sha256 = SHA256.Create())
                 {
-                    byte[] hash = rfc2898DeriveBytes.GetBytes(20);
-                    return Convert.ToBase64String(hash);
+                    byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+
+                    // Convert to a readable hexadecimal string
+                    StringBuilder sb = new StringBuilder();
+                    foreach (byte b in hashBytes)
+                    {
+                        sb.Append(b.ToString("x2"));
+                    }
+                    return sb.ToString();
                 }
             }
-        
     }
 }
