@@ -25,5 +25,10 @@ namespace AmbulanceOptimization.Controllers
         {
             return _missionService.GetFilteredMissions(selectedDate, isChecked);
         }
+
+        public List<Mission> GetMissionsByRouteId(int id)
+        {
+            return _missionService.GetMissionsByRouteId(id);
+        }
     }
 }

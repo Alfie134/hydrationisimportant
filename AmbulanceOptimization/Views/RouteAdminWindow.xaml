@@ -20,13 +20,13 @@
 
                 <StackPanel Width="250">
                     <Label FontWeight="Bold">Ruter</Label>
-                <ListBox Width="250" Margin="5"  ItemsSource="{Binding Routes}" SelectedItem="{Binding SelectedRoute}"
-                         DisplayMemberPath="Id"></ListBox>
+                    <ListBox Width="250" Margin="5"  ItemsSource="{Binding Routes}" SelectedItem="{Binding SelectedRoute}" DisplayMemberPath="Id"></ListBox>
                 </StackPanel>
 
                 <StackPanel Width="250" >
                     <Label FontWeight="Bold">Allerede tilføjede opgaver</Label>
-                    <ListBox Height="50" Margin="5"></ListBox>
+                    <!--TODO! formater DisplayMemberPath som fra og til postnumre evt med et tidspunkt  OBS! SAMME PROBLEM I TASKBANK--> 
+                    <ListBox  ItemsSource="{Binding MissionsOnRoute}" DisplayMemberPath="PatientName" Margin="5"></ListBox>
                 </StackPanel>
 
                 <StackPanel Width="250" Margin="5">
