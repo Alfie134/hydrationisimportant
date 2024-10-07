@@ -30,5 +30,10 @@ namespace AmbulanceOptimization.Controllers
         {
             return _missionService.GetMissionsByRouteId(id);
         }
+
+        public List<Mission> SuggestMissionsByPostal(DateTime date, int postal, bool Arrival)
+        {
+            return _missionService.SuggestMissionsByPostal(date,postal, Arrival);
+        }
     }
 }

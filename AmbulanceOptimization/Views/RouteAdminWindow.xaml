@@ -31,12 +31,16 @@
 
                 <StackPanel Width="250" Margin="5">
                     <Label FontWeight="Bold">Foreslag</Label>
+
                     <Label>Postnummer</Label>
-                    <ListBox Height="20"></ListBox>
+                    <ListBox ItemsSource="{Binding MissionSuggetionsByPostal}" DisplayMemberPath="PatientName"  Height="20"></ListBox>
+
                     <Label>Kommune</Label>
                     <ListBox Height="20"></ListBox>
+
                     <Label>Region</Label>
                     <ListBox Height="20"></ListBox>
+
                 </StackPanel>
             </StackPanel>
 

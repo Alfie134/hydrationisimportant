@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Models;
 using Repositories.Interfaces;
+using System;
 
 namespace Repositories
 {
@@ -41,7 +42,7 @@ namespace Repositories
             }
             return id;
         }
-
+        //Henter ALLE missioner
             public IEnumerable<Mission> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
@@ -69,7 +70,7 @@ namespace Repositories
             return missions;
         }
 
-
+        //Finder alle opgaver på en rute
         public IEnumerable<Mission> GetMissionsByRouteId(int id,SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
@@ -93,7 +94,7 @@ namespace Repositories
 
             return missions;
         }
-
+        //filterer opgaver efter dato og om de er tildelt en rute
         public IEnumerable<Mission> GetFilteredMissions(DateTime? selectedDate, bool showAllMissions, SqlConnection connection, SqlTransaction? transaction = null)
         {
             List<Mission> missions = new List<Mission>();
@@ -118,7 +119,37 @@ namespace Repositories
             }
             return missions;
         }
+        public List<Mission> SuggestMissionsByPostal(DateTime dateTime, int postal, bool isItArrival, SqlConnection connection, SqlTransaction transaction)
+        {
+            var missions = new List<Mission>();
 
+            string query = @"
+        SELECT * FROM Mission
+        WHERE 
+            CAST(ExpectedDeparture AS DATE) = @DateTime
+            AND ((@IsItArrival = 1 AND FromPostal = @Postal)
+                 OR (@IsItArrival = 0 AND ToPostal = @Postal))";
+
+            using (var command = new SqlCommand(query, connection, transaction))
+            {
+                command.Parameters.AddWithValue("@DateTime", dateTime.Date); // Konverter til dato uden tid
+                command.Parameters.AddWithValue("@Postal", postal);
+                command.Parameters.AddWithValue("@IsItArrival", isItArrival ? 1 : 0);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Mission mission = SerializeMission(reader); 
+                        missions.Add(mission);
+                    }
+                }
+            }
+
+            return missions;
+        }
+
+        //Henter mission med et bestemt id
         public Mission GetById(int id, SqlConnection connection, SqlTransaction? transaction = null)
         {
             string query = "SELECT * FROM Mission WHERE Id = @Id";
