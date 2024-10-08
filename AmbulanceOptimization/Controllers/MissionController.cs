@@ -35,7 +35,7 @@ namespace AmbulanceOptimization.Controllers
 
         public List<Mission> SuggestMissionsByPostal(DateTime date, int postal, bool Arrival)
         {
-            return _routeService.SuggestMissionsByPostal(date,postal, Arrival);
+            return _routeService.SuggestMissionsByPostals(date,new List<int> {postal}, Arrival);
         }
 
         public List<Mission> SuggestMissionsByMunicipality(DateTime date, int postal, bool arrival)

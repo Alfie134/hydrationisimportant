@@ -13,6 +13,6 @@ namespace Repositories.Interfaces
     {
         IEnumerable<Mission> GetMissionsByRouteId( int routeid, SqlConnection connection, SqlTransaction? transaction = null);
         IEnumerable<Mission> GetFilteredMissions(DateTime? selectedDate, bool showAllMissions , SqlConnection connection, SqlTransaction? transaction = null);
-        List<Mission> SuggestMissionsByPostal(DateTime date, int postal, bool arrival, SqlConnection connection, SqlTransaction transaction);
+        List<Mission> SuggestMissionsByPostals(DateTime date, List<int> postals, bool arrival, SqlConnection connection, SqlTransaction transaction);
     }
 }

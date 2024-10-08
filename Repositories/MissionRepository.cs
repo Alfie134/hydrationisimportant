@@ -122,23 +122,32 @@ namespace Repositories
             }
             return missions;
         }
-        public List<Mission> SuggestMissionsByPostal(DateTime dateTime, int postal, bool isItArrival, SqlConnection connection, SqlTransaction transaction)
+
+
+        public List<Mission> SuggestMissionsByPostals(DateTime dateTime, List<int> postals, bool isItArrival, SqlConnection connection, SqlTransaction transaction)
         {
             var missions = new List<Mission>();
 
-            string query = @"
-        SELECT * FROM Mission
-        WHERE 
-            CAST(ExpectedDeparture AS DATE) = @DateTime
-            AND ((@IsItArrival = 1 AND FromPostal = @Postal)
-                 OR (@IsItArrival = 0 AND ToPostal = @Postal))";
+            string query = "";
+            var postalParams = string.Join(",", postals);
+
+            if (isItArrival)
+            {
+                query = $@"
+                SELECT * FROM Mission
+                WHERE CAST(ExpectedDeparture AS DATE) = @DateTime AND (ToPostal IN ({postalParams}))";
+            }
+            else
+            {
+                query = $@"
+                SELECT * FROM Mission
+                WHERE CAST(ExpectedDeparture AS DATE) = @DateTime AND (FromPostal IN ({postalParams}))";
+
+            }
 
             using (var command = new SqlCommand(query, connection, transaction))
             {
                 command.Parameters.AddWithValue("@DateTime", dateTime.Date); // Konverter til dato uden tid
-                command.Parameters.AddWithValue("@Postal", postal);
-                command.Parameters.AddWithValue("@IsItArrival", isItArrival ? 1 : 0);
-
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())

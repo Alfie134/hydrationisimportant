@@ -42,14 +42,11 @@ namespace Services
 
            //og nu kan du lave et foreach loop der tjekker samtlige postnumre i kommunen 
            List<Mission> missionsInMunicipality = new List<Mission>();
-           foreach (int postalInMunipality in AllPostalsInMunipality)
-           {
-               missionsInMunicipality.AddRange(SuggestMissionsByPostal(date, postalInMunipality,arrival));
-           }
+           missionsInMunicipality.AddRange(SuggestMissionsByPostals(date, AllPostalsInMunipality,arrival));
            return missionsInMunicipality;
         }
 
-        public List<Mission> SuggestMissionsByPostal(DateTime date, int postal, bool arrival)
+        public List<Mission> SuggestMissionsByPostals(DateTime date, List<int> postals, bool arrival)
         {
             List<Mission> tempMissions = new List<Mission>();
             using (var connection = new SqlConnection(_connectionString))
@@ -59,7 +56,7 @@ namespace Services
                 {
                     try
                     {
-                        tempMissions = (List<Mission>)_missionRepository.SuggestMissionsByPostal(date, postal, arrival, connection, transaction);
+                        tempMissions = (List<Mission>)_missionRepository.SuggestMissionsByPostals(date, postals, arrival, connection, transaction);
                         transaction.Commit();
                     }
                     catch
