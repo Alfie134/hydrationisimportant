@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Models;
 using Repositories.Interfaces;
+using System;
 
 namespace Repositories
 {
@@ -25,7 +26,7 @@ namespace Repositories
                 command.Parameters.AddWithValue("@RegionalTaskId", entity.RegionalTaskId);
                 command.Parameters.AddWithValue("@Type", entity.Type);
                 command.Parameters.AddWithValue("@Description", entity.Description);
-                command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId);
+                command.Parameters.AddWithValue("@RegionalTaskId", entity.RegionalTaskId);
                 command.Parameters.AddWithValue("@ExpectedDeparture", entity.ExpectedDeparture);
                 command.Parameters.AddWithValue("@Duration", entity.DurationInMin);
                 command.Parameters.AddWithValue("@ExpectedArrival", entity.ExpectedArrival);
@@ -33,6 +34,10 @@ namespace Repositories
                 command.Parameters.AddWithValue("@FromPostal", entity.FromPostalCode);
                 command.Parameters.AddWithValue("@ToAddress", entity.ToAddress);
                 command.Parameters.AddWithValue("@ToPostal", entity.ToPostalCode);
+                command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId);
+                command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? entity.RouteId.Value : DBNull.Value);
+                command.Parameters.AddWithValue("@AssignedVehicle", entity.AssignedVehicle != null? entity.AssignedVehicle.Id : DBNull.Value);
+                command.Parameters.AddWithValue("@UserId", entity.UserId.HasValue ? entity.UserId.Value : DBNull.Value);
                 command.Parameters.AddWithValue("@PatientName", entity.PatientName);
                 command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? (object)entity.RouteId.Value : DBNull.Value);
                 command.Parameters.AddWithValue("@UserId", entity.UserId.HasValue ? (object)entity.UserId.Value : DBNull.Value); 
@@ -40,20 +45,19 @@ namespace Repositories
             }
             return id;
         }
-
-
-        public IEnumerable<Mission> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
+        //Henter ALLE missioner
+            public IEnumerable<Mission> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
-            string query = @"SELECT Mission.Id, Mission.RegionId, Mission.ServiceLevelId, Mission.RegionalTaskId, Mission.Type, Mission.Description, ServiceLevel.Name, 
+            string query = @"SELECT Mission.Id, Mission.RegionId, Mission.ServiceLevelId, Mission.RouteId, Mission.UserId, Mission.RegionalTaskId, Mission.Type, ServiceLevel.Name, 
                             Mission.ExpectedDeparture, Mission.Duration, Mission.ExpectedArrival, 
-                            FromPostal.PostalCode AS FromPostal, Mission.FromAddress, 
-                            ToPostal.PostalCode AS ToPostal, Mission.ToAddress,
-                            Mission.PatientName, Mission.RouteId, Mission.UserId
+                            FromPostalT.PostalCode AS FromPostal, Mission.FromAddress, 
+                            ToPostalT.PostalCode AS ToPostal, Mission.ToAddress, 
+                            Mission.PatientName, Mission.Description
 
                             FROM Mission
-                            JOIN PostalCode AS FromPostal ON Mission.FromPostal = FromPostal.PostalCode
-                            JOIN PostalCode AS ToPostal ON Mission.ToPostal = ToPostal.PostalCode
+                            JOIN PostalCode AS FromPostalT ON Mission.FromPostal = FromPostalT.PostalCode
+                            JOIN PostalCode AS ToPostalT ON Mission.ToPostal = ToPostalT.PostalCode
                             JOIN ServiceLevel ON Mission.ServiceLevelId = ServiceLevel.Id;";
             using (SqlCommand command = new SqlCommand(query, connection, transaction))
             {
@@ -69,6 +73,7 @@ namespace Repositories
             return missions;
         }
 
+        //Finder alle opgaver på en rute
         public IEnumerable<Mission> GetMissionsByRouteId(int id,SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
@@ -92,7 +97,62 @@ namespace Repositories
 
             return missions;
         }
+        //filterer opgaver efter dato og om de er tildelt en rute
+        public IEnumerable<Mission> GetFilteredMissions(DateTime? selectedDate, bool showAllMissions, SqlConnection connection, SqlTransaction? transaction = null)
+        {
+            List<Mission> missions = new List<Mission>();
+            string query = @" SELECT * FROM Mission
+                    WHERE (@SelectedDate IS NULL OR CONVERT(date, ExpectedDeparture) = CONVERT(date, @SelectedDate))
+                    AND (@ShowAllMissions = 1 OR RouteId IS NULL)";
 
+
+            using (SqlCommand command = new SqlCommand(query, connection, transaction))
+            {
+                command.Parameters.AddWithValue("@SelectedDate", (object)selectedDate ?? DBNull.Value);
+                command.Parameters.AddWithValue("@ShowAllMissions", showAllMissions ? 1 : 0);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Mission mission = SerializeMission(reader);
+                        missions.Add(mission);
+                    }
+                }
+            }
+            return missions;
+        }
+        public List<Mission> SuggestMissionsByPostal(DateTime dateTime, int postal, bool isItArrival, SqlConnection connection, SqlTransaction transaction)
+        {
+            var missions = new List<Mission>();
+
+            string query = @"
+        SELECT * FROM Mission
+        WHERE 
+            CAST(ExpectedDeparture AS DATE) = @DateTime
+            AND ((@IsItArrival = 1 AND FromPostal = @Postal)
+                 OR (@IsItArrival = 0 AND ToPostal = @Postal))";
+
+            using (var command = new SqlCommand(query, connection, transaction))
+            {
+                command.Parameters.AddWithValue("@DateTime", dateTime.Date); // Konverter til dato uden tid
+                command.Parameters.AddWithValue("@Postal", postal);
+                command.Parameters.AddWithValue("@IsItArrival", isItArrival ? 1 : 0);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Mission mission = SerializeMission(reader); 
+                        missions.Add(mission);
+                    }
+                }
+            }
+
+            return missions;
+        }
+
+        //Henter mission med et bestemt id
         public Mission GetById(int id, SqlConnection connection, SqlTransaction? transaction = null)
         {
             string query = "SELECT * FROM Mission WHERE Id = @Id";
@@ -114,7 +174,7 @@ namespace Repositories
         {
             string query =
                 "UPDATE Mission SET Type = @Type, Description = @Description, RegionalTaskId = @RegionalTaskId, ExpectedDeparture = @ExpectedDeparture, Duration = @Duration, ExpectedArrival = @ExpectedArrival, PatientName = @PatientName, RegionId = @RegionId, RouteId = @RouteId, FromAddress = @FromAddress, FromPostal = @FromPostal, ToAddress = @ToAddress, ToPostal = @ToPostal, ServiceLevelId = @ServiceLevelId, UserId = @UserId WHERE Id = @Id";
-            
+
             SqlCommand command = new SqlCommand(query, connection, transaction);
             using (command)
             {

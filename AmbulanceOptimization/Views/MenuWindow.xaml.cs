@@ -18,5 +18,13 @@ namespace AmbulanceOptimization.Views
             taskBank.Show();
             this.Close();
         }
+
+
+        private void Open_Routes(object sender, RoutedEventArgs e)
+        {
+            RouteAdminWindow routeAdmin = new RouteAdminWindow();
+            routeAdmin.Show();
+            this.Close();
+        }
     }
 }

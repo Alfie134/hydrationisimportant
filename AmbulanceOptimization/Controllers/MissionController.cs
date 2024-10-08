@@ -21,5 +21,19 @@ namespace AmbulanceOptimization.Controllers
         {
             return _missionService.GetAll();
         }
+        public List<Mission> GetFilteredMissions(DateTime? selectedDate, bool isChecked)
+        {
+            return _missionService.GetFilteredMissions(selectedDate, isChecked);
+        }
+
+        public List<Mission> GetMissionsByRouteId(int id)
+        {
+            return _missionService.GetMissionsByRouteId(id);
+        }
+
+        public List<Mission> SuggestMissionsByPostal(DateTime date, int postal, bool Arrival)
+        {
+            return _missionService.SuggestMissionsByPostal(date,postal, Arrival);
+        }
     }
 }

@@ -7,16 +7,26 @@
         mc:Ignorable="d"
         Title="Menu" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+
         <!-- Brug ClockControl user control -->
         <userControls1:ClockControl  />
         <!-- Brug af profil knap-->
         <userControls1:UserProfileControl/>
-        <Image HorizontalAlignment="Left" Height="100" Margin="38,32,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button Content="Opgavebanken" HorizontalAlignment="Center" Margin="0,163,0,0" VerticalAlignment="Top" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold" Click="Open_TaskBank"/>
-        <Button Content="Under udførelse" HorizontalAlignment="Center" Margin="0,238,0,0" VerticalAlignment="Top" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold"/>
-        <Button Content="Slet opgave" HorizontalAlignment="Center" Margin="0,319,0,0" VerticalAlignment="Top" Height="54" Width="124" Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold"/>
-        <Image Margin="10,10,606,332" Source="/Images/Region Syddanmark Logo.png" Stretch="Fill"/>
-        <Rectangle HorizontalAlignment="Center" Height="3" Margin="0,115,0,0" VerticalAlignment="Top" Width="800" Fill="#FF7CBF41"/>
-
+        <!--logo-->
+        <StackPanel>
+            <Image Height="80" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Source="/Images/Region Syddanmark Logo.png"/>
+            <Rectangle HorizontalAlignment="Center" Height="3"  VerticalAlignment="Top" Width="800" Fill="#FF7CBF41"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+            <Button Content="Opgavebanken" HorizontalAlignment="Center" Margin="5" VerticalAlignment="Top" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold" Click="Open_TaskBank"/>
+            <Button Content="Ruter" HorizontalAlignment="Center"  VerticalAlignment="Top" Margin="5" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold" Click="Open_Routes"/>
+            <Button Content="Under udførelse" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Height="54" Width="124"  Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold"/>
+          <!--  <Button Content="Slet opgave" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Height="54" Width="124" Background="White" BorderBrush="#FF7CBF41" FontWeight="Bold"/>-->
+        </StackPanel>
     </Grid>
 </Window>

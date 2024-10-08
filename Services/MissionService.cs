@@ -66,5 +66,72 @@ namespace Services
             }
             return tempMissions;
         }
+        public List<Mission> GetFilteredMissions(DateTime? dateTime, bool AllMissions)
+        {
+            List<Mission> tempMissions = new List<Mission>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        tempMissions = (List<Mission>)_missionRepository.GetFilteredMissions(dateTime,AllMissions, connection, transaction);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+            return tempMissions;
+        }
+        public List<Mission> GetMissionsByRouteId(int RouteId)
+        {
+            List<Mission> tempMissions = new List<Mission>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        tempMissions = (List<Mission>)_missionRepository.GetMissionsByRouteId(RouteId, connection, transaction);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+            return tempMissions;
+        }
+
+        public List<Mission> SuggestMissionsByPostal(DateTime date, int postal, bool arrival)
+        {
+            List<Mission> tempMissions = new List<Mission>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        tempMissions = (List<Mission>)_missionRepository.SuggestMissionsByPostal(date, postal, arrival, connection, transaction);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+            return tempMissions;
+        }
     }
 }

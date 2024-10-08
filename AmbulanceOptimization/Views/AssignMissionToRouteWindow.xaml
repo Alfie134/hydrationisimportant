@@ -1,9 +1,8 @@
-﻿<Window x:Class="AmbulanceOptimization.Views.DrivingMissions"
+﻿<Window x:Class="AmbulanceOptimization.Views.AssignMissionToRouteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
-        Title="KØRENDE/KOMMENDE KØRSLER" Height="600" Width="1000">
-
+        Title="RUTE TILDELING" Height="600" Width="1000">
     <Grid>
         <!-- User controls -->
         <controls:BackToMenu/>
@@ -11,10 +10,10 @@ xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
         <controls:RegionSouthLogo/>
         <controls:UserProfileControl/>
         <!-- Header -->
-        <TextBlock Text="KØRENDE/KOMMENDE KØRSLER" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0"/>
+        <TextBlock Text="RUTE TILDELING" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0"/>
 
         <!-- DataGrid til at vise missioner -->
-        <DataGrid x:Name="GoingMissionDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding GoingMissions}"
+        <DataGrid x:Name="AssignMissionToRouteDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding Missions}"
                   HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="30,100,30,30" IsReadOnly="True" CanUserResizeRows="False">
             <DataGrid.Columns>
                 <!-- Type -->
@@ -45,16 +44,17 @@ xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
                 <DataGridTextColumn Header="Tid og Dato" Binding="{Binding DateTime}" Width="150" />
 
                 <!-- Handling: Gør ledig knap -->
-                <DataGridTemplateColumn Header="Handling" Width="100">
+               <!-- <DataGridTemplateColumn Header="Handling" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Gør ledig" Command="{Binding MakeAvailableCommand}" />
                         </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellTemplate>                 
                 </DataGridTemplateColumn>
+                -->
             </DataGrid.Columns>
-        </DataGrid>
+        </DataGrid> 
 
 
-    </Grid>
+
 </Window>

@@ -11,8 +11,18 @@ namespace AmbulanceOptimization.Commands
 {
     internal class CreateUserCommand: ICommand
     {
+
+        private readonly CreateUserViewModel _viewModel;
+
+        public CreateUserCommand(CreateUserViewModel viewModel)
+        {
+            _viewModel = viewModel;
+        }
         public bool CanExecute(object? parameter)
         {
+            if (_viewModel.Username.Length <=5) return false;
+            if (_viewModel.Password.Length <= 3) return false;
+            else if (_viewModel.IsUsernameAvailable()==false) return false;
             return true;
         }
 
@@ -29,6 +39,12 @@ namespace AmbulanceOptimization.Commands
                 }
             }
 
+        }
+
+        // Brug dette til at opdatere CanExecute når brugernavnet er valideret
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler? CanExecuteChanged;
