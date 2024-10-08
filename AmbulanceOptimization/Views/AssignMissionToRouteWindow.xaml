@@ -13,7 +13,7 @@ xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
         <TextBlock Text="RUTE TILDELING" FontSize="30" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0"/>
 
         <!-- DataGrid til at vise missioner -->
-        <DataGrid x:Name="AssignMissionToRouteDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding GoingMissions}"
+        <DataGrid x:Name="AssignMissionToRouteDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding Missions}"
                   HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="30,100,30,30" IsReadOnly="True" CanUserResizeRows="False">
             <DataGrid.Columns>
                 <!-- Type -->
@@ -44,16 +44,17 @@ xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
                 <DataGridTextColumn Header="Tid og Dato" Binding="{Binding DateTime}" Width="150" />
 
                 <!-- Handling: Gør ledig knap -->
-                <DataGridTemplateColumn Header="Handling" Width="100">
+               <!-- <DataGridTemplateColumn Header="Handling" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Gør ledig" Command="{Binding MakeAvailableCommand}" />
                         </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellTemplate>                 
                 </DataGridTemplateColumn>
+                -->
             </DataGrid.Columns>
-        </DataGrid>
+        </DataGrid> 
 
 
-    </Grid>
+
 </Window>

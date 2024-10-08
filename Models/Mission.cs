@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Models
+﻿namespace Models
 {
     public class Mission
     {
         public int Id { get; set; }  // Primær nøgle
         public int RegionId { get; set; }  // Fremmed nøgle til Region
         public string RegionalTaskId { get; set; }  // Regionalt specifikt opgave-ID
-
         public TaskType Type { get; set; }  // Typen af opgave (f.eks. Ambulance, Patienttransport)
         public string Description { get; set; }  // Opgavebeskrivelse
-
-        //------ToAddress og FromAddress bruges ikke eller refereres ikke til nogen steder. 
-
         public ServiceLevel ServiceLevel { get; set; }
         public int ServiceLevelId { get; set; }
         public DateTime ExpectedDeparture { get; set; }

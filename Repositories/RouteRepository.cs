@@ -1,8 +1,6 @@
-﻿using Configuration;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Models;
 using Repositories.Interfaces;
-using System.Data;
 
 namespace Repositories
 {

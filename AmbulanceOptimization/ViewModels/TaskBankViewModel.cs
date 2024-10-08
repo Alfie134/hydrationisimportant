@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using AmbulanceOptimization.Controllers;
@@ -13,7 +12,11 @@ namespace AmbulanceOptimization.ViewModels
 {
     internal class TaskBankViewModel : INotifyPropertyChanged
     {
+        // ObservableCollection til alle missioner
         public ObservableCollection<Mission> Missions { get; set; }
+
+        // ObservableCollection til de valgte missioner
+        public ObservableCollection<Mission> SelectedMissions { get; set; } = new ObservableCollection<Mission>();
 
         private bool _showAllMissions = true;
         public bool ShowAllMissions
@@ -21,9 +24,12 @@ namespace AmbulanceOptimization.ViewModels
             get { return _showAllMissions; }
             set
             {
-                _showAllMissions = value;
-                OnPropertyChanged();
-                LoadMissions();
+                if (_showAllMissions != value)
+                {
+                    _showAllMissions = value;
+                    OnPropertyChanged();
+                    LoadMissions();
+                }
             }
         }
 
@@ -33,20 +39,12 @@ namespace AmbulanceOptimization.ViewModels
             get { return _selectedDate; }
             set
             {
-                _selectedDate = value;
-                OnPropertyChanged();
-                LoadMissions();
-            }
-        }
-
-        private Mission _selectedMission;
-        public Mission SelectedMission
-        {
-            get { return _selectedMission; }
-            set
-            {
-                _selectedMission = value;
-                OnPropertyChanged();
+                if (_selectedDate != value)
+                {
+                    _selectedDate = value;
+                    OnPropertyChanged();
+                    LoadMissions();
+                }
             }
         }
 
@@ -59,22 +57,30 @@ namespace AmbulanceOptimization.ViewModels
             LoadMissions();
 
             // Initialiser kommandoerne
-            OpenMissionDetailsCommand = new RelayCommand(_ => OpenMissionDetails(), _ => CanOpenMissionDetails());
             AssignMissionCommand = new RelayCommand(_ => AssignMission(), _ => CanAssignMission());
+            OpenMissionDetailsCommand = new RelayCommand(_ => OpenMissionDetails(), _ => CanOpenMissionDetails());
+
+            // Overvåg ændringer i SelectedMissions for at opdatere kommandoernes CanExecute
+            SelectedMissions.CollectionChanged += (s, e) =>
+            {
+                (AssignMissionCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                (OpenMissionDetailsCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            };
         }
 
         private void LoadMissions()
         {
-            var tempMissions = new List<Mission>();
             Missions.Clear();
 
-            if (SelectedDate == null && _showAllMissions)
+            List<Mission> tempMissions;
+
+            if (SelectedDate == null && ShowAllMissions)
             {
                 tempMissions = _missionController.GetAll(); // Henter ALLE opgaver
             }
             else
             {
-                tempMissions = _missionController.GetFilteredMissions(_selectedDate, _showAllMissions);
+                tempMissions = _missionController.GetFilteredMissions(SelectedDate, ShowAllMissions);
             }
 
             foreach (var mission in tempMissions)
@@ -83,42 +89,49 @@ namespace AmbulanceOptimization.ViewModels
             }
         }
 
-        // Kommando til at åbne detaljer
-        public ICommand OpenMissionDetailsCommand { get; }
-
         // Kommando til "Tildel"-knappen
         public ICommand AssignMissionCommand { get; }
 
+        // Kommando til at åbne mission detaljer
+        public ICommand OpenMissionDetailsCommand { get; }
+
         private void AssignMission()
         {
-            if (SelectedMission != null)
+            if (SelectedMissions != null && SelectedMissions.Count > 0)
             {
-                // Her kan du implementere logik for at tildele en mission, f.eks. til en rute eller ambulance
-                var assignMissionToRouteWindow = new AssignMissionToRouteWindow();
-                assignMissionToRouteWindow.DataContext = new MissionDetailsViewModel(SelectedMission);
+                var assignMissionToRouteWindow = new AssignMissionToRouteWindow
+                {
+                    DataContext = new AssignMissionToRouteViewModel(SelectedMissions)
+                };
+
                 assignMissionToRouteWindow.ShowDialog();
             }
         }
 
         private bool CanAssignMission()
         {
-            // Returner true, hvis en mission er valgt
-            return SelectedMission != null;
+            // Returnerer true, hvis mindst én mission er valgt
+            return SelectedMissions != null && SelectedMissions.Count > 0;
         }
 
         private void OpenMissionDetails()
         {
-            if (SelectedMission != null)
+            if (SelectedMissions != null && SelectedMissions.Count == 1)
             {
-                var assignMissionToRouteWindow = new AssignMissionToRouteWindow();
-                assignMissionToRouteWindow.DataContext = new MissionDetailsViewModel(SelectedMission);
-                assignMissionToRouteWindow.Show();
+                var selectedMission = SelectedMissions.First();
+                var assignMissionToRouteWindow = new AssignMissionToRouteWindow
+                {
+                    DataContext = new MissionDetailsViewModel(selectedMission)
+                };
+
+                assignMissionToRouteWindow.ShowDialog();
             }
         }
 
         private bool CanOpenMissionDetails()
         {
-            return SelectedMission != null;
+            // Kun aktiveret, når præcis én mission er valgt
+            return SelectedMissions != null && SelectedMissions.Count == 1;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

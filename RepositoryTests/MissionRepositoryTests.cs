@@ -2,8 +2,8 @@ using Microsoft.Data.SqlClient;
 using Models;
 using Repositories;
 using Repositories.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Bogus;
-using System.Security.Cryptography.X509Certificates;
 
 namespace RepositoryTests
 {
@@ -12,6 +12,8 @@ namespace RepositoryTests
     {
         private string _connectionString;
         private IMissionRepository _missionRepository;
+
+        private Faker<Mission> _missionFaker;
 
         [TestInitialize]
         public void Setup()
@@ -32,7 +34,9 @@ namespace RepositoryTests
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
                 PatientName = "Jane Doe",
                 RouteId = null,
+                FromAddress = "",
                 FromPostalCode = 8940,
+                ToAddress = "",
                 ToPostalCode = 8900,
                 Type = TaskType.C,
                 ServiceLevelId = 1,
@@ -93,7 +97,9 @@ namespace RepositoryTests
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
                 PatientName = "John Doe",
                 RouteId = null,
+                FromAddress = "",
                 FromPostalCode = 8940,
+                ToAddress = "",
                 ToPostalCode = 8900,
                 Type = TaskType.C,
                 ServiceLevelId = 1,
@@ -147,7 +153,9 @@ namespace RepositoryTests
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
                 PatientName = "John Doe",
                 RouteId = null,
+                FromAddress = "",
                 FromPostalCode = 8940,
+                ToAddress = "",
                 ToPostalCode = 8900,
                 Type = TaskType.C,
                 ServiceLevelId = 1,
@@ -226,7 +234,9 @@ namespace RepositoryTests
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
                 PatientName = "Mark Doe",
                 RouteId = null,
+                FromAddress = "",
                 FromPostalCode = 8940,
+                ToAddress = "",
                 ToPostalCode = 8900,
                 Type = TaskType.C,
                 ServiceLevelId = 1,
@@ -283,6 +293,8 @@ namespace RepositoryTests
                 Assert.IsNull(deletedMission, "The mission should be deleted and thus be null.");
             }
         }
+
+
         [TestMethod]
         public void CreateRandomMissions()
         {
@@ -291,11 +303,10 @@ namespace RepositoryTests
             IVehicleRepository vehicleRepository = new VehicleRepository();
             IServiceLevelRepository serviceLevelRepository = new ServiceLevelRepository();
             IPostalRepository postalRepository = new PostalRepository(_connectionString);
-
+        
             List<Mission> missionsList = new List<Mission>();
 
             List<Municipality> municipalityList = null;
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -315,7 +326,6 @@ namespace RepositoryTests
             }
 
             List<Vehicle> vehiclesList = null;
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -335,7 +345,6 @@ namespace RepositoryTests
             }
 
             List<ServiceLevel> serviceLevelList = null;
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -355,7 +364,6 @@ namespace RepositoryTests
             }
 
             List<Region> regionsList = null;
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -375,7 +383,6 @@ namespace RepositoryTests
             }
 
             List<Postal> ppostalsList = null;
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -393,17 +400,19 @@ namespace RepositoryTests
                     }
                 }
             }
+            DateTime timeStart = new DateTime(2024, 10, 08, 12, 00, 00);
+            DateTime timeEnd = new DateTime(2024, 11, 12, 12, 00, 00);
 
             var testmission = new Faker<Mission>()
                 .RuleFor(o => o.RegionId, f => f.PickRandom(regionsList.Select(x => x.RegionId)))
-                .RuleFor(o => o.RegionalTaskId, f => f.Internet.Mac())
+                .RuleFor(o => o.RegionalTaskId, f => "RegionTaskId")
                 .RuleFor(o => o.Type, f => TaskType.D)
-                .RuleFor(o => o.Description, f => f.Lorem.Lines(2))
+                .RuleFor(o => o.Description, f => "Random Description 5.0")
                 .RuleFor(o => o.ServiceLevelId, f => f.PickRandom(serviceLevelList.Select(x => x.Id)))
-                .RuleFor(o => o.ExpectedDeparture, f => DateTime.Now)
+                .RuleFor(o => o.ExpectedDeparture, f => new DateTime())
                 .RuleFor(o => o.DurationInMin, f => f.Random.Number(60, 240))
                 .RuleFor(o => o.ExpectedArrival, f => DateTime.Now.AddMinutes(f.Random.Number(60, 240)))
-                .RuleFor(o => o.AssignedVehicle, f => f.PickRandom(vehiclesList))
+                .RuleFor(o => o.AssignedVehicle, f => new Vehicle())
                 .RuleFor(O => O.FromAddress, f => $"{f.Address.City()} {f.Address.StreetName()} {f.Address.SecondaryAddress()}")
                 .RuleFor(o => o.FromPostalCode, f => f.PickRandom(ppostalsList.Select(p => p.PostalNumber)))
                 .RuleFor(o => o.ToAddress, f => $"{f.Address.City()} {f.Address.StreetName()} {f.Address.SecondaryAddress()}")
@@ -412,18 +421,17 @@ namespace RepositoryTests
                 .RuleFor(o => o.RouteId, f => f.Random.Number(1, 21))
                 .RuleFor(o => o.UserId, f => f.Random.Number(1, 21));
 
-            missionsList = testmission.Generate(10).ToList();
-            using (var connection = new SqlConnection(_connectionString))
+                missionsList = testmission.Generate(20).ToList();
+                using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 using (var transaction = connection.BeginTransaction())
                 {
                     try
-                    {
-                        foreach (Mission mission in missionsList)
-                        {
-
-                            _missionRepository.Add(mission, connection, transaction);
+                    { 
+                        foreach (Mission mission in missionsList){
+                    
+                        _missionRepository.Add(mission, connection, transaction);
                         }
                         transaction.Commit();
                     }

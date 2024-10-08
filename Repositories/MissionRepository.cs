@@ -15,21 +15,21 @@ namespace Repositories
 
         public int Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
-            SqlCommand command = new SqlCommand(@$"INSERT INTO Mission (Type,Description,RegionalTaskId,ExpectedDeparture,Duration,ExpectedArrival,
-                                        PatientName,RegionId,RouteId,FromAddress,FromPostal,ToAddress,ToPostal,ServiceLevelId,AssignedVehicle,UserId) VALUES 
-                                        (@Type,@Description,@RegionalTaskId,@ExpectedDeparture,@Duration,@ExpectedArrival,@PatientName,@RegionId,@RouteId,@FromAddress,@FromPostal,
-                                        @ToAddress,@ToPostal,@ServiceLevelId,@AssignedVehicle,@UserId); SELECT SCOPE_IDENTITY();", connection, transaction);
+            SqlCommand command = new SqlCommand(@$"INSERT INTO Mission (RegionId,RegionalTaskId,Type,Description,ServiceLevelId,ExpectedDeparture,Duration,ExpectedArrival,
+                                        FromAddress,FromPostal,ToAddress,ToPostal,PatientName,RouteId,UserId) VALUES 
+                                        (@RegionId,@RegionalTaskId,@Type,@Description,@ServiceLevelId,@ExpectedDeparture,@Duration,@ExpectedArrival,
+                                        @FromAddress,@FromPostal,@ToAddress,@ToPostal,@PatientName,@RouteId,@UserId); SELECT SCOPE_IDENTITY();", connection, transaction);
             int id = 0;
             using (command)
             {
+                command.Parameters.AddWithValue("@RegionId", entity.RegionId);
+                command.Parameters.AddWithValue("@RegionalTaskId", entity.RegionalTaskId);
                 command.Parameters.AddWithValue("@Type", entity.Type);
                 command.Parameters.AddWithValue("@Description", entity.Description);
                 command.Parameters.AddWithValue("@RegionalTaskId", entity.RegionalTaskId);
                 command.Parameters.AddWithValue("@ExpectedDeparture", entity.ExpectedDeparture);
                 command.Parameters.AddWithValue("@Duration", entity.DurationInMin);
                 command.Parameters.AddWithValue("@ExpectedArrival", entity.ExpectedArrival);
-                command.Parameters.AddWithValue("@PatientName", entity.PatientName);
-                command.Parameters.AddWithValue("@RegionId", entity.RegionId);
                 command.Parameters.AddWithValue("@FromAddress", entity.FromAddress);
                 command.Parameters.AddWithValue("@FromPostal", entity.FromPostalCode);
                 command.Parameters.AddWithValue("@ToAddress", entity.ToAddress);
@@ -38,6 +38,9 @@ namespace Repositories
                 command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? entity.RouteId.Value : DBNull.Value);
                 command.Parameters.AddWithValue("@AssignedVehicle", entity.AssignedVehicle != null? entity.AssignedVehicle.Id : DBNull.Value);
                 command.Parameters.AddWithValue("@UserId", entity.UserId.HasValue ? entity.UserId.Value : DBNull.Value);
+                command.Parameters.AddWithValue("@PatientName", entity.PatientName);
+                command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? (object)entity.RouteId.Value : DBNull.Value);
+                command.Parameters.AddWithValue("@UserId", entity.UserId.HasValue ? (object)entity.UserId.Value : DBNull.Value); 
                 id = Convert.ToInt32(command.ExecuteScalar());
             }
             return id;
@@ -74,12 +77,12 @@ namespace Repositories
         public IEnumerable<Mission> GetMissionsByRouteId(int id,SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
-            string query = "SELECT * FROM Mission WHERE RouteId = @id";
+            string query = "SELECT * FROM Mission WHERE RouteId = @Id";
 
 
             using (SqlCommand command = new SqlCommand(query, connection, transaction))
             {
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@Id", id);
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
