@@ -21,7 +21,7 @@
         <CheckBox Content="Vis tildelte opgaver" IsChecked="{Binding ShowAllMissions, Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top"/>
 
         <!-- DataGrid til opgaver -->
-        <DataGrid x:Name="TaskDataGrid"  ItemsSource="{Binding Missions}" AutoGenerateColumns="False" 
+        <DataGrid x:Name="TaskDataGrid" ItemsSource="{Binding Missions}" AutoGenerateColumns="False" 
                   GridLinesVisibility="All" BorderBrush="Black" BorderThickness="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20,150,20,100" Height="300">
             <DataGrid.Columns>
@@ -62,9 +62,13 @@
 
             </DataGrid.Columns>
         </DataGrid>
-      
+
+        <!-- Tildel Knap -->
+        <Button Content="Tildel" Command="{Binding AssignMissionCommand}" 
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,460,20,0" Width="100"/>
+
         <!-- Back to menu knap -->
         <userControls:BackToMenu/>
-    
+
     </Grid>
 </Window>

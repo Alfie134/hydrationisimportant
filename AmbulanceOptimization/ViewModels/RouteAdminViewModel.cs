@@ -4,25 +4,24 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Documents;
 using AmbulanceOptimization.Controllers;
 using Models;
 
 namespace AmbulanceOptimization.ViewModels
 {
-    internal class RouteAdminViewModel: INotifyPropertyChanged
+    internal class RouteAdminViewModel : INotifyPropertyChanged
     {
-        public List<Route> Routes { get; set; }
+        public ObservableCollection<Route> Routes { get; set; } // Skiftet fra List til ObservableCollection
         public ObservableCollection<Mission> MissionsOnRoute { get; set; }
         public ObservableCollection<Mission> MissionSuggetionsByPostal { get; set; }
 
-        private Route _selectedRoute { get; set; } 
+        private Route _selectedRoute;
         public Route SelectedRoute
         {
             get { return _selectedRoute; }
-            set {
+            set
+            {
                 _selectedRoute = value;
                 OnPropertyChanged(nameof(SelectedRoute));
                 LoadMissionsOnRoute();
@@ -30,12 +29,12 @@ namespace AmbulanceOptimization.ViewModels
             }
         }
 
-        private RouteController _routeController {get; set; }
-        private MissionController _missionController {get; set; }
+        private readonly RouteController _routeController;
+        private readonly MissionController _missionController;
 
         public RouteAdminViewModel()
         {
-            Routes = new List<Route>();
+            Routes = new ObservableCollection<Route>(); // Skiftet til ObservableCollection
             MissionsOnRoute = new ObservableCollection<Mission>();
             MissionSuggetionsByPostal = new ObservableCollection<Mission>();
             _routeController = new RouteController();
@@ -45,18 +44,31 @@ namespace AmbulanceOptimization.ViewModels
 
         private void LoadRoutes()
         {
-            Routes = _routeController.GetAll();
+            Routes.Clear();
+            var tempRoutes = _routeController.GetAll();
+
+            if (tempRoutes != null)
+            {
+                foreach (var route in tempRoutes)
+                {
+                    Routes.Add(route);
+                }
+            }
         }
 
         private void LoadMissionsOnRoute()
-        { 
+        {
+            if (SelectedRoute == null)
+                return;
+
             MissionsOnRoute.Clear();
-            List<Mission> tempMissions = _missionController.GetMissionsByRouteId(SelectedRoute.Id);
+            var tempMissions = _missionController.GetMissionsByRouteId(SelectedRoute.Id);
+
             if (tempMissions != null)
             {
-                foreach (Mission mission in tempMissions)
+                foreach (var mission in tempMissions)
                 {
-                    MissionsOnRoute.Add(mission); 
+                    MissionsOnRoute.Add(mission);
                 }
             }
         }
@@ -64,19 +76,23 @@ namespace AmbulanceOptimization.ViewModels
         private void LoadSuggestions()
         {
             MissionSuggetionsByPostal.Clear();
-            List<Mission> tempMissionsPostal = new List<Mission>();
+            var tempMissionsPostal = new List<Mission>();
 
-            foreach (Mission mission in MissionsOnRoute)
+            foreach (var mission in MissionsOnRoute)
             {
                 // Hent missioner baseret på afhentning
                 var pickupMissions = _missionController.SuggestMissionsByPostal(mission.ExpectedDeparture, mission.FromPostalCode, false);
                 tempMissionsPostal.AddRange(pickupMissions);
 
-                // Tilføjer alle missioner fundet ved afsætningsstedet til tempMissionsPostal
+                // Tilføjer alle missioner fundet ved afsætningsstedet
                 var dropOffMissions = _missionController.SuggestMissionsByPostal(mission.ExpectedArrival, mission.ToPostalCode, true);
                 tempMissionsPostal.AddRange(dropOffMissions);
             }
-            foreach (Mission mission in tempMissionsPostal)
+
+            // Fjern dubletter (hvis relevant)
+            var uniqueMissions = tempMissionsPostal.Distinct().ToList();
+
+            foreach (var mission in uniqueMissions)
             {
                 MissionSuggetionsByPostal.Add(mission);
             }

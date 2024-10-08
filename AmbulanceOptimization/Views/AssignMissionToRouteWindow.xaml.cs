@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace AmbulanceOptimization.Views
 {
     /// <summary>
-    /// Interaction logic for DrivingMissions.xaml
+    /// Interaction logic for AssignMissionToRouteWindow.xaml
     /// </summary>
-    public partial class DrivingMissions : Window
+    public partial class AssignMissionToRouteWindow: Window
     {
-        public DrivingMissions()
+        public AssignMissionToRouteWindow()
         {
             InitializeComponent();
         }
