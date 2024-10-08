@@ -131,7 +131,7 @@ namespace Repositories
             string query = "";
             var postalParams = string.Join(",", postals);
 
-            if (isItArrival)
+            if (isItArrival == false)
             {
                 query = $@"
                 SELECT * FROM Mission

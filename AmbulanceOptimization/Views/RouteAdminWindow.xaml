@@ -36,7 +36,7 @@
                     <ListBox ItemsSource="{Binding MissionSuggetionsByPostal}" DisplayMemberPath="PatientName"  MinHeight="30"></ListBox>
 
                     <Label>Kommune</Label>
-                    <ListBox Height="20" ItemsSource="{Binding MissionsSuggestedByMunicipality}" DisplayMemberPath="PatientName" MinHeight="30"></ListBox>
+                    <ListBox ItemsSource="{Binding MissionsSuggestedByMunicipality}" DisplayMemberPath="PatientName" MinHeight="30"></ListBox>
 
                     <Label>Region</Label>
                     <ListBox Height="20"></ListBox>
