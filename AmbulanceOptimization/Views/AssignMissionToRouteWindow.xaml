@@ -53,8 +53,9 @@ xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
                 </DataGridTemplateColumn>
                 -->
             </DataGrid.Columns>
-        </DataGrid> 
-</Grid>
+        </DataGrid>
+    </Grid> 
+
 
 
 </Window>
