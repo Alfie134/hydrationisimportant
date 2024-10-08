@@ -15,6 +15,7 @@ namespace AmbulanceOptimization.ViewModels
         public ObservableCollection<Route> Routes { get; set; } // Skiftet fra List til ObservableCollection
         public ObservableCollection<Mission> MissionsOnRoute { get; set; }
         public ObservableCollection<Mission> MissionSuggetionsByPostal { get; set; }
+        public ObservableCollection<Mission> MissionsSuggestedByMunicipality { get; set; }
 
         private Route _selectedRoute;
         public Route SelectedRoute
@@ -37,6 +38,7 @@ namespace AmbulanceOptimization.ViewModels
             Routes = new ObservableCollection<Route>(); // Skiftet til ObservableCollection
             MissionsOnRoute = new ObservableCollection<Mission>();
             MissionSuggetionsByPostal = new ObservableCollection<Mission>();
+            MissionsSuggestedByMunicipality = new ObservableCollection<Mission>();
             _routeController = new RouteController();
             _missionController = new MissionController();
             LoadRoutes();
@@ -75,17 +77,48 @@ namespace AmbulanceOptimization.ViewModels
 
         private void LoadSuggestions()
         {
-            MissionSuggetionsByPostal.Clear();
-            var tempMissionsPostal = new List<Mission>();
+            LoadSuggestionsFromPostal();
+            LoadSuggestionsFromMunicipality();
+        }
 
-            foreach (var mission in MissionsOnRoute)
+        private void LoadSuggestionsFromMunicipality()
+        {
+            //Forslag i samme kommune
+            MissionsSuggestedByMunicipality.Clear();
+            List<Mission> tempMissionsMunipality = new List<Mission>();
+
+            foreach (Mission mission in MissionsOnRoute)
             {
                 // Hent missioner baseret på afhentning
-                var pickupMissions = _missionController.SuggestMissionsByPostal(mission.ExpectedDeparture, mission.FromPostalCode, false);
+                List<Mission> pickupMissions = _missionController.SuggestMissionsByMunicipality(mission.ExpectedDeparture, mission.FromPostalCode, false);
+                tempMissionsMunipality.AddRange(pickupMissions);
+
+                // Tilføjer alle missioner fundet ved afsætningsstedet
+                List<Mission> dropOffMissions = _missionController.SuggestMissionsByMunicipality(mission.ExpectedArrival, mission.ToPostalCode, true);
+                tempMissionsMunipality.AddRange(dropOffMissions);
+            }
+
+            foreach (var mission in tempMissionsMunipality)
+            {
+                MissionsSuggestedByMunicipality.Add(mission);
+
+            }
+        }
+
+        private void LoadSuggestionsFromPostal()
+        {
+            //forslag i sammepostnummer
+            MissionSuggetionsByPostal.Clear();
+            List<Mission> tempMissionsPostal = new List<Mission>();
+
+            foreach (Mission mission in MissionsOnRoute)
+            {
+                // Hent missioner baseret på afhentning
+                List<Mission> pickupMissions = _missionController.SuggestMissionsByPostal(mission.ExpectedDeparture, mission.FromPostalCode, false);
                 tempMissionsPostal.AddRange(pickupMissions);
 
                 // Tilføjer alle missioner fundet ved afsætningsstedet
-                var dropOffMissions = _missionController.SuggestMissionsByPostal(mission.ExpectedArrival, mission.ToPostalCode, true);
+                List<Mission> dropOffMissions = _missionController.SuggestMissionsByPostal(mission.ExpectedArrival, mission.ToPostalCode, true);
                 tempMissionsPostal.AddRange(dropOffMissions);
             }
 

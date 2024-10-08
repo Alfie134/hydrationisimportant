@@ -11,10 +11,12 @@ namespace AmbulanceOptimization.Controllers
     internal class MissionController
     {
         private MissionService _missionService;
+        private SuggestRouteService _routeService;
 
         public MissionController()
         {
             _missionService = new MissionService();
+            _routeService = new SuggestRouteService();
         }
 
         public List<Mission> GetAll()
@@ -33,7 +35,12 @@ namespace AmbulanceOptimization.Controllers
 
         public List<Mission> SuggestMissionsByPostal(DateTime date, int postal, bool Arrival)
         {
-            return _missionService.SuggestMissionsByPostal(date,postal, Arrival);
+            return _routeService.SuggestMissionsByPostals(date,new List<int> {postal}, Arrival);
+        }
+
+        public List<Mission> SuggestMissionsByMunicipality(DateTime date, int postal, bool arrival)
+        {
+            return _routeService.SuggestOnMunicality(date, postal, arrival);
         }
     }
 }
