@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Configuration;
-using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Data.SqlClient;
 using Models;
 using Repositories.Interfaces;
 
@@ -22,7 +15,7 @@ namespace Repositories
         public int Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
             SqlCommand command = new SqlCommand(@$"INSERT INTO Mission (Type,Description,RegionalTaskId,ExpectedDeparture,Duration,ExpectedArrival,
-                                        PatientName,RegionId,RouteId,FromPostal,ToPostal,ServiceLevelId,UserId) VALUES 
+                                        PatientName,RegionId,RouteId,FromAddress,FromPostal,ToAddress,ToPostal,ServiceLevelId,UserId) VALUES 
                                         (@Type,@Description,@RegionalTaskId,@ExpectedDeparture,@Duration,@ExpectedArrival,@PatientName,@RegionId,@RouteId,@FromPostal,
                                         @ToPostal,@ServiceLevelId,@UserId); SELECT SCOPE_IDENTITY();", connection, transaction);
             int id = 0;
@@ -36,7 +29,9 @@ namespace Repositories
                 command.Parameters.AddWithValue("@ExpectedArrival", entity.ExpectedArrival);
                 command.Parameters.AddWithValue("@PatientName", entity.PatientName);
                 command.Parameters.AddWithValue("@RegionId", entity.RegionId);
+                command.Parameters.AddWithValue("@FromAddress", entity.FromAddress);
                 command.Parameters.AddWithValue("@FromPostal", entity.FromPostalCode);
+                command.Parameters.AddWithValue("@ToAddress", entity.ToAddress);
                 command.Parameters.AddWithValue("@ToPostal", entity.ToPostalCode);
                 command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId);
                 command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? (object)entity.RouteId.Value : DBNull.Value);
@@ -77,12 +72,12 @@ namespace Repositories
         public IEnumerable<Mission> GetMissionsByRouteId(int id,SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
-            string query = "SELECT * FROM Mission WHERE RouteId = @id";
+            string query = "SELECT * FROM Mission WHERE RouteId = @Id";
 
 
             using (SqlCommand command = new SqlCommand(query, connection, transaction))
             {
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@Id", id);
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -118,7 +113,7 @@ namespace Repositories
         public void Update(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
             string query =
-                "UPDATE Mission SET Type = @Type, Description = @Description, RegionalTaskId = @RegionalTaskId, ExpectedDeparture = @ExpectedDeparture, Duration = @Duration, ExpectedArrival = @ExpectedArrival, PatientName = @PatientName, RegionId = @RegionId, RouteId =@RouteId, FromPostal = @FromPostal, ToPostal = @ToPostal, ServiceLevelId = @ServiceLevelId, UserId = @UserId WHERE Id = @Id";
+                "UPDATE Mission SET Type = @Type, Description = @Description, RegionalTaskId = @RegionalTaskId, ExpectedDeparture = @ExpectedDeparture, Duration = @Duration, ExpectedArrival = @ExpectedArrival, PatientName = @PatientName, RegionId = @RegionId, RouteId = @RouteId, FromAddress = @FromAddress, FromPostal = @FromPostal, ToAddress = @ToAddress, ToPostal = @ToPostal, ServiceLevelId = @ServiceLevelId, UserId = @UserId WHERE Id = @Id";
             
             SqlCommand command = new SqlCommand(query, connection, transaction);
             using (command)
@@ -131,7 +126,9 @@ namespace Repositories
                 command.Parameters.AddWithValue("@ExpectedArrival", entity.ExpectedArrival);
                 command.Parameters.AddWithValue("@PatientName", entity.PatientName);
                 command.Parameters.AddWithValue("@RegionId", entity.RegionId);
+                command.Parameters.AddWithValue("@FromAddress", entity.FromAddress);
                 command.Parameters.AddWithValue("@FromPostal", entity.FromPostalCode);
+                command.Parameters.AddWithValue("@ToAddress", entity.ToAddress);
                 command.Parameters.AddWithValue("@ToPostal", entity.ToPostalCode);
                 command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId);
                 command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? (object)entity.RouteId.Value : DBNull.Value);
