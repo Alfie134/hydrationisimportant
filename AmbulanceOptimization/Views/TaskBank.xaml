@@ -23,6 +23,7 @@
         <!-- DataGrid til opgaver -->
         <DataGrid x:Name="TaskDataGrid" ItemsSource="{Binding Missions}" AutoGenerateColumns="False" 
                   GridLinesVisibility="All" BorderBrush="Black" BorderThickness="1"
+                  SelectionMode="Extended" SelectionUnit="FullRow" SelectionChanged="TaskDataGrid_SelectionChanged" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20,150,20,100" Height="300">
             <DataGrid.Columns>
 

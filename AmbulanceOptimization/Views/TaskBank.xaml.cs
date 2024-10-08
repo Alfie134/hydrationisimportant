@@ -22,18 +22,33 @@ namespace AmbulanceOptimization.Views
 
         }
 
-        private void AssignVehicle_Click(object sender, RoutedEventArgs e)
+      /*  Dette Click er ikke længere en funktion vi benytter
+       *  private void AssignVehicle_Click(object sender, RoutedEventArgs e)
         {
             AssignVehicle assignVehicleWindow = new AssignVehicle();
 
             assignVehicleWindow.ShowDialog();
 
             this.Close();
-        }
+        }*/
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        private void TaskDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (viewModel != null)
+            {
+                // Rydder tidligere valgte missioner
+                viewModel.SelectedMissions.Clear();
+
+                // Tilføjer de aktuelt valgte missioner
+                foreach (Mission mission in TaskDataGrid.SelectedItems)
+                {
+                    viewModel.SelectedMissions.Add(mission);
+                }
+            }
         }
     }
 }
