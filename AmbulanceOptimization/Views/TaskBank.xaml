@@ -69,6 +69,26 @@
 
         <!-- Back to menu knap -->
         <userControls:BackToMenu/>
+        <Button x:Name="Opret_Opgave" Content="Opret Opgave" HorizontalAlignment="Left" Margin="20,508,0,0" VerticalAlignment="Top" Height="39" Width="108" Click="Button_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button x:Name="Rediger_Opgave" Content="Rediger Opgave" HorizontalAlignment="Left" Margin="180,508,0,0" VerticalAlignment="Top" Height="39" Width="108" Click="Button_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button x:Name="Slet_opgave_" Content="Slet Opgave" HorizontalAlignment="Left" Margin="342,508,0,0" VerticalAlignment="Top" Height="39" Width="108" Click="Button_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button x:Name="Tildel_Rute" Content="Tildel Rute" HorizontalAlignment="Left" Margin="506,508,0,0" VerticalAlignment="Top" Height="39" Width="108" Click="Button_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
 
     </Grid>
 </Window>
