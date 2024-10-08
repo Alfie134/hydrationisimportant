@@ -46,12 +46,12 @@
                 <DataGridTextColumn Header="Forventet Ankomst" Binding="{Binding ExpectedArrival}" Width="150"/>
 
                 <!-- Fra Postnummer -->
-                <DataGridTextColumn Header="Fra Postnummer" Binding="{Binding FromPostal.PostalNumber}" Width="100"/>
+                <DataGridTextColumn Header="Fra Postnummer" Binding="{Binding FromPostalCode}" Width="100"/>
                 <!-- Fra Adresse -->
                 <DataGridTextColumn Header="Fra Adresse" Binding="{Binding FromAddress}" Width="200"/>
 
                 <!-- Til Postnummer -->
-                <DataGridTextColumn Header="Til Postnummer" Binding="{Binding ToPostal.PostalNumber}" Width="100"/>
+                <DataGridTextColumn Header="Til Postnummer" Binding="{Binding ToPostalCode}" Width="100"/>
                 <!-- Til Adresse -->
                 <DataGridTextColumn Header="Til Adresse" Binding="{Binding ToAddress}" Width="200"/>
 
