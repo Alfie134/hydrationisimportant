@@ -110,28 +110,5 @@ namespace Services
             }
             return tempMissions;
         }
-
-        public List<Mission> SuggestMissionsByPostal(DateTime date, int postal, bool arrival)
-        {
-            List<Mission> tempMissions = new List<Mission>();
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        tempMissions = (List<Mission>)_missionRepository.SuggestMissionsByPostal(date, postal, arrival, connection, transaction);
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-            return tempMissions;
-        }
     }
 }

@@ -2,6 +2,7 @@
 using Models;
 using Microsoft.Data.SqlClient;
 using Repositories.Interfaces;
+using System.Transactions;
 
 namespace Repositories
 {
@@ -38,7 +39,6 @@ namespace Repositories
         
             SqlCommand command = new SqlCommand(query, connection,transaction);
             command.Parameters.AddWithValue("Id", id);
-            //connection.Open();
 
             using (SqlDataReader reader = command.ExecuteReader())
             {
@@ -48,6 +48,43 @@ namespace Repositories
                 }
             }
             return municipality;
+        }
+
+        public List<int> GetMunipalityByPostal(int postalCode, SqlConnection connection, SqlTransaction? transaction = null)
+        {
+            List<int> PostalsInMunipality = new List<int>();
+
+            string query = "SELECT MunicipalityId FROM Municipality_PostalCode WHERE PostalCode = @Id";
+
+            SqlCommand command = new SqlCommand(query, connection, transaction);
+            command.Parameters.AddWithValue("Id", postalCode);
+
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    PostalsInMunipality.Add((int)reader["MunicipalityId"]);
+                }
+            }
+            return PostalsInMunipality;
+        }
+        public List<int> GetPostalsInMunipality(int MunipalityId, SqlConnection connection, SqlTransaction? transaction = null)
+        {
+            List<int> PostalsInMunipality = new List<int>();
+
+            string query = "SELECT PostalCode FROM Municipality_PostalCode WHERE MunicipalityId = @Id";
+
+            SqlCommand command = new SqlCommand(query, connection, transaction);
+            command.Parameters.AddWithValue("Id", MunipalityId);
+            
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    PostalsInMunipality.Add((int)reader["PostalCode"]);
+                }
+            }
+            return PostalsInMunipality;
         }
     }
 }
