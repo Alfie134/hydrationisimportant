@@ -14,26 +14,26 @@ namespace Repositories
 
         public int Add(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
-            SqlCommand command = new SqlCommand(@$"INSERT INTO Mission (Type,Description,RegionalTaskId,ExpectedDeparture,Duration,ExpectedArrival,
-                                        PatientName,RegionId,RouteId,FromAddress,FromPostal,ToAddress,ToPostal,ServiceLevelId,UserId) VALUES 
-                                        (@Type,@Description,@RegionalTaskId,@ExpectedDeparture,@Duration,@ExpectedArrival,@PatientName,@RegionId,@RouteId,@FromPostal,
-                                        @ToPostal,@ServiceLevelId,@UserId); SELECT SCOPE_IDENTITY();", connection, transaction);
+            SqlCommand command = new SqlCommand(@$"INSERT INTO Mission (RegionId,RegionalTaskId,Type,Description,ServiceLevelId,ExpectedDeparture,Duration,ExpectedArrival,
+                                        FromAddress,FromPostal,ToAddress,ToPostal,PatientName,RouteId,UserId) VALUES 
+                                        (@RegionId,@RegionalTaskId,@Type,@Description,@ServiceLevelId,@ExpectedDeparture,@Duration,@ExpectedArrival,
+                                        @FromAddress,@FromPostal,@ToAddress,@ToPostal,@PatientName,@RouteId,@UserId); SELECT SCOPE_IDENTITY();", connection, transaction);
             int id = 0;
             using (command)
             {
+                command.Parameters.AddWithValue("@RegionId", entity.RegionId);
+                command.Parameters.AddWithValue("@RegionalTaskId", entity.RegionalTaskId);
                 command.Parameters.AddWithValue("@Type", entity.Type);
                 command.Parameters.AddWithValue("@Description", entity.Description);
-                command.Parameters.AddWithValue("@RegionalTaskId", entity.RegionalTaskId);
+                command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId);
                 command.Parameters.AddWithValue("@ExpectedDeparture", entity.ExpectedDeparture);
                 command.Parameters.AddWithValue("@Duration", entity.DurationInMin);
                 command.Parameters.AddWithValue("@ExpectedArrival", entity.ExpectedArrival);
-                command.Parameters.AddWithValue("@PatientName", entity.PatientName);
-                command.Parameters.AddWithValue("@RegionId", entity.RegionId);
                 command.Parameters.AddWithValue("@FromAddress", entity.FromAddress);
                 command.Parameters.AddWithValue("@FromPostal", entity.FromPostalCode);
                 command.Parameters.AddWithValue("@ToAddress", entity.ToAddress);
                 command.Parameters.AddWithValue("@ToPostal", entity.ToPostalCode);
-                command.Parameters.AddWithValue("@ServiceLevelId", entity.ServiceLevelId);
+                command.Parameters.AddWithValue("@PatientName", entity.PatientName);
                 command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? (object)entity.RouteId.Value : DBNull.Value);
                 command.Parameters.AddWithValue("@UserId", entity.UserId.HasValue ? (object)entity.UserId.Value : DBNull.Value); 
                 id = Convert.ToInt32(command.ExecuteScalar());
@@ -45,15 +45,15 @@ namespace Repositories
         public IEnumerable<Mission> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
-            string query = @"SELECT Mission.RegionalTaskId, Mission.Type, ServiceLevel.Name, 
-                             Mission.ExpectedDeparture, Mission.DurationInMin, Mission.ExpectedArrival, 
-                            FromPostal.PostalNumber, Mission.FromAddress, 
-                            ToPostal.PostalNumber, Mission.ToAddress, 
-                            Mission.PatientName, Mission.Description
+            string query = @"SELECT Mission.Id, Mission.RegionId, Mission.ServiceLevelId, Mission.RegionalTaskId, Mission.Type, Mission.Description, ServiceLevel.Name, 
+                            Mission.ExpectedDeparture, Mission.Duration, Mission.ExpectedArrival, 
+                            FromPostal.PostalCode AS FromPostal, Mission.FromAddress, 
+                            ToPostal.PostalCode AS ToPostal, Mission.ToAddress,
+                            Mission.PatientName, Mission.RouteId, Mission.UserId
 
                             FROM Mission
-                            JOIN PostalCode AS FromPostal ON Mission.FromPostalCode = FromPostal.PostalCode
-                            JOIN PostalCode AS ToPostal ON Mission.ToPostalCode = ToPostal.PostalCode
+                            JOIN PostalCode AS FromPostal ON Mission.FromPostal = FromPostal.PostalCode
+                            JOIN PostalCode AS ToPostal ON Mission.ToPostal = ToPostal.PostalCode
                             JOIN ServiceLevel ON Mission.ServiceLevelId = ServiceLevel.Id;";
             using (SqlCommand command = new SqlCommand(query, connection, transaction))
             {

@@ -13,6 +13,8 @@ namespace RepositoryTests
         private string _connectionString;
         private IMissionRepository _missionRepository;
 
+        private Faker<Mission> _missionFaker;
+
         [TestInitialize]
         public void Setup()
         {
@@ -32,7 +34,9 @@ namespace RepositoryTests
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
                 PatientName = "Jane Doe",
                 RouteId = null,
+                FromAddress = "",
                 FromPostalCode = 8940,
+                ToAddress = "",
                 ToPostalCode = 8900,
                 Type = TaskType.C,
                 ServiceLevelId = 1,
@@ -93,7 +97,9 @@ namespace RepositoryTests
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
                 PatientName = "John Doe",
                 RouteId = null,
+                FromAddress = "",
                 FromPostalCode = 8940,
+                ToAddress = "",
                 ToPostalCode = 8900,
                 Type = TaskType.C,
                 ServiceLevelId = 1,
@@ -147,7 +153,9 @@ namespace RepositoryTests
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
                 PatientName = "John Doe",
                 RouteId = null,
+                FromAddress = "",
                 FromPostalCode = 8940,
+                ToAddress = "",
                 ToPostalCode = 8900,
                 Type = TaskType.C,
                 ServiceLevelId = 1,
@@ -226,7 +234,9 @@ namespace RepositoryTests
                 ExpectedArrival = DateTime.Now.AddMinutes(120),
                 PatientName = "Mark Doe",
                 RouteId = null,
+                FromAddress = "",
                 FromPostalCode = 8940,
+                ToAddress = "",
                 ToPostalCode = 8900,
                 Type = TaskType.C,
                 ServiceLevelId = 1,
@@ -390,6 +400,8 @@ namespace RepositoryTests
                     }
                 }
             }
+            DateTime timeStart = new DateTime(2024, 10, 08, 12, 00, 00);
+            DateTime timeEnd = new DateTime(2024, 11, 12, 12, 00, 00);
 
             var testmission = new Faker<Mission>()
                 .RuleFor(o => o.RegionId, f => f.PickRandom(regionsList.Select(x => x.RegionId)))
@@ -397,7 +409,7 @@ namespace RepositoryTests
                 .RuleFor(o => o.Type, f => TaskType.D)
                 .RuleFor(o => o.Description, f => "Random Description 5.0")
                 .RuleFor(o => o.ServiceLevelId, f => f.PickRandom(serviceLevelList.Select(x => x.Id)))
-                .RuleFor(o => o.ExpectedDeparture, f => DateTime.Now)
+                .RuleFor(o => o.ExpectedDeparture, f => new DateTime())
                 .RuleFor(o => o.DurationInMin, f => f.Random.Number(60, 240))
                 .RuleFor(o => o.ExpectedArrival, f => DateTime.Now.AddMinutes(f.Random.Number(60, 240)))
                 .RuleFor(o => o.AssignedVehicle, f => new Vehicle())
