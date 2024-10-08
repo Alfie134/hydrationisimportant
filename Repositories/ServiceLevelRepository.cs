@@ -9,6 +9,7 @@ namespace Repositories
         public ServiceLevelRepository()
         {
         }
+
         public IEnumerable<ServiceLevel> GetAll(SqlConnection connection, SqlTransaction? transaction = null)
         {
             var serviceLevels = new List<ServiceLevel>();

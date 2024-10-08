@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Models;
 using Repositories.Interfaces;
-using System;
 
 namespace Repositories
 {
@@ -26,7 +25,6 @@ namespace Repositories
                 command.Parameters.AddWithValue("@RegionalTaskId", entity.RegionalTaskId);
                 command.Parameters.AddWithValue("@Type", entity.Type);
                 command.Parameters.AddWithValue("@Description", entity.Description);
-                command.Parameters.AddWithValue("@RegionalTaskId", entity.RegionalTaskId);
                 command.Parameters.AddWithValue("@ExpectedDeparture", entity.ExpectedDeparture);
                 command.Parameters.AddWithValue("@Duration", entity.DurationInMin);
                 command.Parameters.AddWithValue("@ExpectedArrival", entity.ExpectedArrival);
@@ -39,8 +37,6 @@ namespace Repositories
                 command.Parameters.AddWithValue("@AssignedVehicle", entity.AssignedVehicle != null? entity.AssignedVehicle.Id : DBNull.Value);
                 command.Parameters.AddWithValue("@UserId", entity.UserId.HasValue ? entity.UserId.Value : DBNull.Value);
                 command.Parameters.AddWithValue("@PatientName", entity.PatientName);
-                command.Parameters.AddWithValue("@RouteId", entity.RouteId.HasValue ? (object)entity.RouteId.Value : DBNull.Value);
-                command.Parameters.AddWithValue("@UserId", entity.UserId.HasValue ? (object)entity.UserId.Value : DBNull.Value); 
                 id = Convert.ToInt32(command.ExecuteScalar());
             }
             return id;
@@ -53,7 +49,7 @@ namespace Repositories
                             Mission.ExpectedDeparture, Mission.Duration, Mission.ExpectedArrival, 
                             FromPostalT.PostalCode AS FromPostal, Mission.FromAddress, 
                             ToPostalT.PostalCode AS ToPostal, Mission.ToAddress, 
-                            Mission.PatientName, Mission.Description
+                            Mission.PatientName, Mission.Description, ServiceLevel.TimeSpan
 
                             FROM Mission
                             JOIN PostalCode AS FromPostalT ON Mission.FromPostal = FromPostalT.PostalCode
@@ -77,7 +73,8 @@ namespace Repositories
         public IEnumerable<Mission> GetMissionsByRouteId(int id,SqlConnection connection, SqlTransaction? transaction = null)
         {
             var missions = new List<Mission>();
-            string query = "SELECT * FROM Mission WHERE RouteId = @Id";
+            string query = @"SELECT Mission.*, ServiceLevel.Name, ServiceLevel.Time FROM Mission JOIN ServiceLevel ON Mission.ServiceLevelId = ServiceLevel.Id
+                WHERE RouteId = @Id";
 
 
             using (SqlCommand command = new SqlCommand(query, connection, transaction))
@@ -101,7 +98,7 @@ namespace Repositories
         public IEnumerable<Mission> GetFilteredMissions(DateTime? selectedDate, bool showAllMissions, SqlConnection connection, SqlTransaction? transaction = null)
         {
             List<Mission> missions = new List<Mission>();
-            string query = @" SELECT * FROM Mission
+            string query = @" SELECT Mission.*, ServiceLevel.Name, ServiceLevel.Time FROM Mission JOIN ServiceLevel ON Mission.ServiceLevelId = ServiceLevel.Id
                     WHERE (@SelectedDate IS NULL OR CONVERT(date, ExpectedDeparture) = CONVERT(date, @SelectedDate))
                     AND (@ShowAllMissions = 1 OR RouteId IS NULL)";
 
@@ -164,7 +161,10 @@ namespace Repositories
         //Henter mission med et bestemt id
         public Mission GetById(int id, SqlConnection connection, SqlTransaction? transaction = null)
         {
-            string query = "SELECT * FROM Mission WHERE Id = @Id";
+            string query = @"SELECT Mission.*, ServiceLevel.Name, ServiceLevel.TimeSpan 
+            FROM Mission 
+            JOIN ServiceLevel ON Mission.ServiceLevelId = ServiceLevel.Id 
+            WHERE Mission.Id = @Id;";
           
             SqlCommand command = new SqlCommand(query, connection,transaction);
             command.Parameters.AddWithValue("@Id", id);
@@ -182,7 +182,14 @@ namespace Repositories
         public void Update(Mission entity, SqlConnection connection, SqlTransaction? transaction = null)
         {
             string query =
-                "UPDATE Mission SET Type = @Type, Description = @Description, RegionalTaskId = @RegionalTaskId, ExpectedDeparture = @ExpectedDeparture, Duration = @Duration, ExpectedArrival = @ExpectedArrival, PatientName = @PatientName, RegionId = @RegionId, RouteId = @RouteId, FromAddress = @FromAddress, FromPostal = @FromPostal, ToAddress = @ToAddress, ToPostal = @ToPostal, ServiceLevelId = @ServiceLevelId, UserId = @UserId WHERE Id = @Id";
+                @"UPDATE Mission SET
+                Type = @Type, Description = @Description,
+                RegionalTaskId = @RegionalTaskId, ExpectedDeparture = @ExpectedDeparture,
+                Duration = @Duration, ExpectedArrival = @ExpectedArrival, PatientName = @PatientName,
+                RegionId = @RegionId, RouteId = @RouteId, FromAddress = @FromAddress, FromPostal = @FromPostal,
+                ToAddress = @ToAddress, ToPostal = @ToPostal, ServiceLevelId = @ServiceLevelId,
+                UserId = @UserId 
+                WHERE Mission.Id = @Id";
 
             SqlCommand command = new SqlCommand(query, connection, transaction);
             using (command)
@@ -236,11 +243,14 @@ namespace Repositories
                 ExpectedArrival = reader.GetDateTime(reader.GetOrdinal("ExpectedArrival")),
                 PatientName = reader.IsDBNull(reader.GetOrdinal("PatientName")) ? null : reader.GetString(reader.GetOrdinal("PatientName")),
                 RegionId = reader.GetInt32(reader.GetOrdinal("RegionId")),
+                FromAddress = reader.IsDBNull(reader.GetOrdinal("FromAddress")) ? null : reader.GetString(reader.GetOrdinal("FromAddress")),
                 FromPostalCode = reader.GetInt32(reader.GetOrdinal("FromPostal")),
+                ToAddress = reader.IsDBNull(reader.GetOrdinal("ToAddress")) ? null : reader.GetString(reader.GetOrdinal("ToAddress")),
                 ToPostalCode = reader.GetInt32(reader.GetOrdinal("ToPostal")),
                 ServiceLevelId = reader.GetInt32(reader.GetOrdinal("ServiceLevelId")),
-                RouteId = reader.IsDBNull(reader.GetOrdinal("RouteId")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("RouteId")),
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserId")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("UserId"))
+                ServiceLevel = new ServiceLevel(reader.GetInt32(reader.GetOrdinal("ServiceLevelId")), reader.GetString(reader.GetOrdinal("Name")), new TimeSpan(0, reader.GetInt32(reader.GetOrdinal("TimeSpan")), 0)),
+                RouteId = reader.IsDBNull(reader.GetOrdinal("RouteId")) ? null : reader.GetInt32(reader.GetOrdinal("RouteId")),
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserId")) ? null : reader.GetInt32(reader.GetOrdinal("UserId"))
             };
         }
     }

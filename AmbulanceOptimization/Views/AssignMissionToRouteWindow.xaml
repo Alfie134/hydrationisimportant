@@ -44,7 +44,7 @@ xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
                 <DataGridTextColumn Header="Tid og Dato" Binding="{Binding DateTime}" Width="150" />
 
                 <!-- Handling: Gør ledig knap -->
-               <!-- <DataGridTemplateColumn Header="Handling" Width="100">
+                <!-- <DataGridTemplateColumn Header="Handling" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Gør ledig" Command="{Binding MakeAvailableCommand}" />
@@ -54,7 +54,7 @@ xmlns:controls="clr-namespace:AmbulanceOptimization.Views.UserControls"
                 -->
             </DataGrid.Columns>
         </DataGrid>
-    </Grid> 
+    </Grid>
 
 
 
